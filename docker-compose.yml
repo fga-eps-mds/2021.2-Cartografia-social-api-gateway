@@ -10,7 +10,18 @@ services:
       - "8000:8000"
     networks:
       - backend
+    depends_on: 
+      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
       
 networks:
   backend:
+    name: cartografia-network
     driver: bridge

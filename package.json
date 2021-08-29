@@ -24,7 +24,11 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.0.1",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^8.0.6",
     "@nestjs/platform-express": "^8.0.0",
+    "amqp-connection-manager": "^3.6.0",
+    "amqplib": "^0.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
@@ -57,7 +61,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "./",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
