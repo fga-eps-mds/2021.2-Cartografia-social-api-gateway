@@ -2,7 +2,7 @@ import { Get } from '@nestjs/common';
 import { Inject } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 
 @Controller('users')
 export class UsersController {
@@ -17,7 +17,7 @@ export class UsersController {
   @Get()
   public async getUserByToken(): Promise<string> {
     const userResponse: string = await firstValueFrom(
-      this.userServiceClient.send('findOneUser', 30),
+      this.userServiceClient.send('findOneUser', 30).pipe(timeout(5000)),
     );
 
     return userResponse;

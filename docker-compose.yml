@@ -1,9 +1,27 @@
 version: '3'
 services:
-  gateway:
-    build: .
-    restart: always
+  gateway-dev:
+    build: 
+      context: .
+      dockerfile: dev.Dockerfile
     hostname: gateway
+    volumes: 
+      - .:/var/www/gateway
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    depends_on: 
+      - rabbitmq
+  gateway:
+    build: 
+      context: .
+      dockerfile: prod.Dockerfile
+    hostname: gateway
+    volumes: 
+      - .:/var/www/gateway
     env_file:
       - .env
     ports:
@@ -25,3 +43,6 @@ networks:
   backend:
     name: cartografia-network
     driver: bridge
+  
+volumes: 
+  node_modules:

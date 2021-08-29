@@ -3,6 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { ConfigService } from './config/configuration';
 import { UsersController } from './users/users.controller';
+import { ComunidadeController } from './comunidade/comunidade.controller';
+import { MapasController } from './mapas/mapas.controller';
+import { MidiaController } from './midia/midia.controller';
 
 type MicrosserviceConfig = {
   queueName: string;
@@ -11,7 +14,7 @@ type MicrosserviceConfig = {
 
 @Module({
   imports: [ConfigModule.forRoot()],
-  controllers: [UsersController],
+  controllers: [UsersController, ComunidadeController, MapasController, MidiaController],
   providers: [
     ConfigService,
     {
@@ -24,6 +27,51 @@ type MicrosserviceConfig = {
           options: {
             urls: [userServiceOptions.host],
             queue: userServiceOptions.queueName,
+          },
+        });
+      },
+      inject: [ConfigService],
+    },
+    {
+      provide: 'COMUNIDADE_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        const comunidadeServiceOptions: MicrosserviceConfig =
+          configService.get('comunidadeService');
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [comunidadeServiceOptions.host],
+            queue: comunidadeServiceOptions.queueName,
+          },
+        });
+      },
+      inject: [ConfigService],
+    },
+    {
+      provide: 'MAPA_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        const mapaServiceOptions: MicrosserviceConfig =
+          configService.get('mapaService');
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [mapaServiceOptions.host],
+            queue: mapaServiceOptions.queueName,
+          },
+        });
+      },
+      inject: [ConfigService],
+    },
+    {
+      provide: 'MIDIA_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        const midiaServiceOptions: MicrosserviceConfig =
+          configService.get('midiaService');
+        return ClientProxyFactory.create({
+          transport: Transport.RMQ,
+          options: {
+            urls: [midiaServiceOptions.host],
+            queue: midiaServiceOptions.queueName,
           },
         });
       },
