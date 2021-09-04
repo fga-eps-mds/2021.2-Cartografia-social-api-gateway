@@ -1,7 +1,8 @@
-name: push
+name: release
 on:
   push:
-    branches: [master, support/configure-ci]
+    tags:
+      - "v*"
 
 jobs:
   test:
@@ -23,7 +24,6 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: False
+          prerelease: true
           files: |
             /tmp/sonar/fga-eps-mds-2021_1-Cartografia-social-api-gateway-${{ steps.date.outputs.date }}.json

@@ -1,7 +1,5 @@
-name: push
-on:
-  push:
-    branches: [master, support/configure-ci]
+name: ci
+on: [push, pull_request]
 
 jobs:
   test:
