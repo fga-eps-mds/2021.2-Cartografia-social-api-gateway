@@ -6,6 +6,14 @@ describe('UsersController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: 'USER_SERVICE',
+          useValue: {
+            send: jest.fn(),
+          },
+        },
+      ],
       controllers: [UsersController],
     }).compile();
 

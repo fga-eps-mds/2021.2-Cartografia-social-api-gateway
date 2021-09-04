@@ -6,6 +6,14 @@ describe('MapasController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: 'MAPA_SERVICE',
+          useValue: {
+            send: jest.fn(),
+          },
+        },
+      ],
       controllers: [MapasController],
     }).compile();
 
