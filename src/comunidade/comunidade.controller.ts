@@ -1,7 +1,8 @@
-import { Get, Inject } from '@nestjs/common';
+import { Body, Get, Inject, Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { SendSurverAnswersDto } from './dto/sendSurverAsnwers.dto';
 
 @Controller('comunidades')
 export class ComunidadeController {
@@ -21,5 +22,16 @@ export class ComunidadeController {
     );
 
     return comunidadeResponse;
+  }
+
+  @Post('sendAnswers')
+  public async sendSurveyAnswers(
+    @Body() answers: SendSurverAnswersDto,
+  ): Promise<string> {
+    const responseId: string = await firstValueFrom(
+      this.comunidadeServiceClient.send('sendAnswers', answers),
+    );
+
+    return responseId;
   }
 }

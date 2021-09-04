@@ -1,12 +1,42 @@
 version: '3'
 services:
+  gateway-debug:
+    build: .
+    hostname: gateway
+    command: npm run start:debug
+    volumes: 
+      - .:/var/www/gateway
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+      - "9229:9229"
+    networks:
+      - backend
+    depends_on: 
+      - rabbitmq
+
   gateway-dev:
-    build: 
-      context: .
-      dockerfile: dev.Dockerfile
+    build: .
     hostname: gateway
     volumes: 
       - .:/var/www/gateway
+    env_file:
+      - .env
+    command: npm run start:dev
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    depends_on: 
+      - rabbitmq
+
+  gateway-prod:
+    build: .
+    hostname: gateway
+    volumes: 
+      - .:/var/www/gateway
+    command: npm run start:prod
     env_file:
       - .env
     ports:
@@ -15,27 +45,23 @@ services:
       - backend
     depends_on: 
       - rabbitmq
-  gateway:
-    build: 
-      context: .
-      dockerfile: prod.Dockerfile
-    hostname: gateway
-    volumes: 
-      - .:/var/www/gateway
-    env_file:
-      - .env
-    ports:
-      - "8000:8000"
-    networks:
-      - backend
-    depends_on: 
-      - rabbitmq
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - backend
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
     networks:
       - backend
       
@@ -45,4 +71,4 @@ networks:
     driver: bridge
   
 volumes: 
-  node_modules:
+  mongo_data:
