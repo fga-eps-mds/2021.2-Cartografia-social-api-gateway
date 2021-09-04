@@ -6,6 +6,14 @@ describe('MidiaController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: 'MIDIA_SERVICE',
+          useValue: {
+            send: jest.fn(),
+          },
+        },
+      ],
       controllers: [MidiaController],
     }).compile();
 
