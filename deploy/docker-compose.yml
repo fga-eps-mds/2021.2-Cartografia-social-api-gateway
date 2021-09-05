@@ -2,12 +2,10 @@ version: '3.5'
 services:
   gateway-hom:
     build:
-      context: ../../.
+      context: ../.
       dockerfile: Dockerfile
     hostname: gateway
     command: npm run start:prod
-    env_file:
-      - .env.hom
     ports:
       - "8000:8000"
     networks:
