@@ -2,7 +2,7 @@ version: '3.5'
 services:
   gateway-hom:
     build:
-      context: ../../.
+      context: ../.
       dockerfile: Dockerfile
     hostname: gateway
     command: npm run start:prod

@@ -31,7 +31,7 @@ jobs:
   deploy-hom:
     runs-on: ubuntu-latest
     needs: ci
-    if: github.ref == 'refs/heads/develop' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/support/configuring-deploy' && github.event_name != 'pull_request'
 
     steps:
     - name: Deploy to Digital Ocean
@@ -42,8 +42,28 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
           cd projects/2021.1-Cartografia-social-api-gateway
-          docker-compose -f deploy/hom/docker-compose.yml down
-          git checkout develop
-          git pull origin develop -f
-          docker-compose -f deploy/hom/microsservices-compose.yml --env-file deploy/hom/.env.hom up -d --build
-          docker-compose -f deploy/hom/docker-compose.yml --env-file deploy/hom/.env.hom up -d --build
+          docker-compose -f deploy/docker-compose.yml down
+          git checkout support/configuring-deploy
+          git pull origin support/configuring-deploy -f
+          docker-compose -f deploy/microsservices-compose.yml --env-file deploy/.env.hom up -d --build
+          docker-compose -f deploy/docker-compose.yml --env-file deploy/.env.hom up -d --build
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: ci
+    if: github.ref == 'refs/heads/support/configuring-deploy' && github.event_name != 'pull_request'
+
+    steps:
+    - name: Deploy to Digital Ocean
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST_PROD }}
+        username: ${{ secrets.SSH_USER_PROD }}
+        password: ${{ secrets.SSH_PASSWORD_PROD }}
+        script: |
+          cd projects/2021.1-Cartografia-social-api-gateway
+          docker-compose -f deploy/docker-compose.yml down
+          git checkout support/configuring-deploy
+          git pull origin support/configuring-deploy -f
+          docker-compose -f deploy/microsservices-compose.yml --env-file deploy/.env.prod up -d --build
+          docker-compose -f deploy/docker-compose.yml --env-file deploy/.env.prod up -d --build
