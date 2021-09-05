@@ -1,9 +1,11 @@
 version: '3.5'
 services:
   gateway-hom:
-    build: .
+    build:
+      context: ../../
+      dockerfile: Dockerfile
     hostname: gateway
-    volumes: 
+    volumes:
       - .:/var/www/gateway
     command: npm run start:prod
     env_file:
