@@ -1,0 +1,19 @@
+version: '3.5'
+services:
+  gateway-hom:
+    build: .
+    hostname: gateway
+    volumes: 
+      - .:/var/www/gateway
+    command: npm run start:prod
+    env_file:
+      - .env.hom
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+      
+networks:
+  backend:
+    external:
+      name: cartografia-network

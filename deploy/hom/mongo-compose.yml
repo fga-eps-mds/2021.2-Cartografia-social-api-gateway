@@ -1,0 +1,23 @@
+version: '3.5'
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${ MONGODB_USERNAME }
+      MONGO_INITDB_ROOT_PASSWORD: $ { MONGODB_PASSWORD }
+
+      
+networks:
+  backend:
+    external:
+      name: cartografia-network
+  
+volumes: 
+  mongo_data:
