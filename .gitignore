@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # Other trash
 /db
+
+# deploy files
+/deploy/**/*.env.*
