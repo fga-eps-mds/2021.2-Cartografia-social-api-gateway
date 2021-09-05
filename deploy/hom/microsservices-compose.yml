@@ -5,15 +5,15 @@ services:
     container_name: rabbitmq
     restart: always
     environment:
-     RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
-     RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - backend
     volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - rabbit_data:/var/lib/rabbitmq/
   mongo:
     container_name: mongo
     image: mongo
@@ -35,3 +35,4 @@ networks:
 
 volumes: 
   mongo_data:
+  rabbit_data:
