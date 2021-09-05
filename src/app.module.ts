@@ -14,7 +14,12 @@ type MicrosserviceConfig = {
 
 @Module({
   imports: [ConfigModule.forRoot()],
-  controllers: [UsersController, ComunidadeController, MapasController, MidiaController],
+  controllers: [
+    UsersController,
+    ComunidadeController,
+    MapasController,
+    MidiaController,
+  ],
   providers: [
     ConfigService,
     {

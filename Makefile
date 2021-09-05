@@ -1,5 +1,14 @@
-run:
-	docker-compose up gateway-dev rabbitmq
+dev-run:
+	docker-compose up gateway-dev rabbitmq mongo
 
-build:
-	docker-compose up --build gateway-dev rabbitmq
+dev-build:
+	docker-compose up --build gateway-dev rabbitmq mongo
+
+dev-build:
+	docker-compose up --build gateway-dev rabbitmq mongo
+
+debug-build:
+	docker-compose up --build gateway-debug rabbitmq mongo
+
+debug-run:
+	docker-compose up gateway-debug rabbitmq mongo

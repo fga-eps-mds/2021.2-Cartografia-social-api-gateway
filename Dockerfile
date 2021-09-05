@@ -8,6 +8,6 @@ WORKDIR /var/www/gateway
 ADD . /var/www/gateway
 
 RUN npm install
-RUN npm run build
+RUN npm run build 
 
-CMD npm run start:dev
+CMD npm run start:prod
