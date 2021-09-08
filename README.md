@@ -1,3 +1,4 @@
+
 # 2021.1-Cartografia-social-api-gatway
 
 Repositório do gateway  do projeto da Cartografia social
@@ -24,6 +25,10 @@ Para a execução local da Wiki do projeto serão necessárias as seguintes depe
 ## [**Execução**](#Sumário)
 
 ### Installation
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-Cartografia-social-api-gateway&metric=alert_status)](https://sonarcloud.io/dashboard?id=fga-eps-mds_2021.1-Cartografia-social-api-gateway)
+
+[![Coverage Status](https://coveralls.io/repos/github/fga-eps-mds/2021.1-Cartografia-social-api-gateway/badge.svg?branch=main)](https://coveralls.io/github/fga-eps-mds/2021.1-Cartografia-social-api-gateway?branch=main)
 
 ```bash
 $ npm install
