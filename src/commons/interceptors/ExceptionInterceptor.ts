@@ -18,25 +18,28 @@ export class ErrorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((error) => {
+        const errorMessage: string =
+          error?.response?.message[0] || error.message;
+
         if (error?.status) {
           switch (error.status) {
             case HttpStatus.BAD_REQUEST:
-              throw new BadRequestException(error.exception);
+              throw new BadRequestException(errorMessage);
               break;
             case HttpStatus.UNAUTHORIZED:
-              throw new UnauthorizedException(error.message);
+              throw new UnauthorizedException(errorMessage);
               break;
             case HttpStatus.FORBIDDEN:
-              throw new ForbiddenException(error.message);
+              throw new ForbiddenException(errorMessage);
               break;
             case HttpStatus.NOT_FOUND:
-              throw new NotFoundException(error.message);
+              throw new NotFoundException(errorMessage);
               break;
             case HttpStatus.CONFLICT:
-              throw new ConflictException(error.message);
+              throw new ConflictException(errorMessage);
               break;
             default:
-              throw new InternalServerErrorException(error.exception);
+              throw new InternalServerErrorException(errorMessage);
           }
         } else {
           throw error;
