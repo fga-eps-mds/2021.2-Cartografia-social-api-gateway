@@ -19,7 +19,9 @@ export class ErrorInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((error) => {
         const errorMessage: string =
-          error?.response?.message[0] || error.message;
+          (Array.isArray(error?.response?.message)
+            ? error?.response?.message?.[0]
+            : error?.response?.message) || error.message;
 
         if (error?.status) {
           switch (error.status) {

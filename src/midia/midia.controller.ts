@@ -1,6 +1,5 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
 
 @Controller('midias')
 export class MidiaController {
@@ -10,14 +9,5 @@ export class MidiaController {
 
   async onApplicationBootstrap() {
     await this.midiaServiceClient.connect();
-  }
-
-  @Get()
-  public async getMidiaByToken(): Promise<string> {
-    const midiaResponse: string = await firstValueFrom(
-      this.midiaServiceClient.send('findOneMidia', 30),
-    );
-
-    return midiaResponse;
   }
 }
