@@ -1,10 +1,12 @@
-import { Get } from '@nestjs/common';
-import { Inject } from '@nestjs/common';
-import { Controller } from '@nestjs/common';
+import { Inject, Controller, Body, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiTags } from '@nestjs/swagger';
 import { firstValueFrom, timeout } from 'rxjs';
+import { IdResponseModel } from 'src/responseModels/id';
+import { CreateUserDto } from './dto/createUser.dto';
 
 @Controller('users')
+@ApiTags('Users')
 export class UsersController {
   constructor(
     @Inject('USER_SERVICE') private readonly userServiceClient: ClientProxy,
@@ -14,12 +16,14 @@ export class UsersController {
     await this.userServiceClient.connect();
   }
 
-  @Get()
-  public async getUserByToken(): Promise<string> {
-    const userResponse: string = await firstValueFrom(
-      this.userServiceClient.send('findOneUser', 30).pipe(timeout(5000)),
+  @Post('createResearcher')
+  public async createResearcher(
+    @Body() createResearcherDto: CreateUserDto,
+  ): Promise<IdResponseModel> {
+    return firstValueFrom(
+      this.userServiceClient
+        .send('createResearcher', createResearcherDto)
+        .pipe(timeout(5000)),
     );
-
-    return userResponse;
   }
 }
