@@ -1,9 +1,11 @@
-import { Inject, Controller, Body, Post } from '@nestjs/common';
+import { Inject, Controller, Body, Post, Get } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 import { firstValueFrom, timeout } from 'rxjs';
 import { IdResponseModel } from 'src/responseModels/id';
 import { CreateUserDto } from './dto/createUser.dto';
+import { UserEmailDto } from './dto/userEmail.dto';
+import { UserResponse } from './responses/user.response';
 
 @Controller('users')
 @ApiTags('Users')
@@ -17,12 +19,36 @@ export class UsersController {
   }
 
   @Post('createResearcher')
+  @ApiConflictResponse()
   public async createResearcher(
     @Body() createResearcherDto: CreateUserDto,
   ): Promise<IdResponseModel> {
     return firstValueFrom(
       this.userServiceClient
         .send('createResearcher', createResearcherDto)
+        .pipe(timeout(15000)),
+    );
+  }
+
+  @Post('createCommunityMember')
+  @ApiConflictResponse()
+  public async createCommunityMember(
+    @Body() createCommunityMemberDto: CreateUserDto,
+  ): Promise<IdResponseModel> {
+    return firstValueFrom(
+      this.userServiceClient
+        .send('createCommunityMember', createCommunityMemberDto)
+        .pipe(timeout(15000)),
+    );
+  }
+
+  @Get('userByEmail')
+  public async getUserByEmail(
+    @Body() userEmailDto: UserEmailDto,
+  ): Promise<UserResponse> {
+    return firstValueFrom(
+      this.userServiceClient
+        .send('getUserData', userEmailDto.email)
         .pipe(timeout(5000)),
     );
   }
