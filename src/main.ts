@@ -10,6 +10,7 @@ async function bootstrap() {
   const port: number = new ConfigService().get('port');
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Documentação da API')
     .setDescription('Projeto Cartografia Social - UnB 2021.1')
     .setVersion('1.0')
