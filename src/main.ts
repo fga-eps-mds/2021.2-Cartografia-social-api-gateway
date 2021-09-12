@@ -19,7 +19,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalInterceptors(new ErrorInterceptor());
-  app.useGlobalPipes(new ValidationPipe({ forbidUnknownValues: true }));
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(port).then(() => {
     console.log(`Gateway running on port ${port}`);
