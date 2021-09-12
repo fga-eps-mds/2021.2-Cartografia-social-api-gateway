@@ -76,9 +76,7 @@ describe('RolesGuard', () => {
     const module = await dynamicModule(['RESEARCHER'], () => false);
 
     const mockExecutionContext = createMock<ExecutionContext>({
-      switchToHttp: () => ({
-        getRequest: () => switchToHttpImplementation,
-      }),
+      switchToHttp: () => switchToHttpImplementation,
     });
 
     roleGuard = module.get<RolesGuard>(RolesGuard);
@@ -96,9 +94,7 @@ describe('RolesGuard', () => {
     });
 
     const mockExecutionContext = createMock<ExecutionContext>({
-      switchToHttp: () => ({
-        getRequest: () => switchToHttpImplementation,
-      }),
+      switchToHttp: () => switchToHttpImplementation,
     });
 
     roleGuard = module.get<RolesGuard>(RolesGuard);
