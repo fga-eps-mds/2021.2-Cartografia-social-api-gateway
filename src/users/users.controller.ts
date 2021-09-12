@@ -2,7 +2,8 @@ import { Inject, Controller, Body, Post, Get } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 import { firstValueFrom, timeout } from 'rxjs';
-import { IdResponseModel } from 'src/responseModels/id';
+import { Auth } from '../commons/decorators/auth.decorator';
+import { IdResponseModel } from '../responseModels/id';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserEmailDto } from './dto/userEmail.dto';
 import { UserResponse } from './responses/user.response';
@@ -31,6 +32,7 @@ export class UsersController {
   }
 
   @Post('createCommunityMember')
+  @Auth('RESEARCHER')
   @ApiConflictResponse()
   public async createCommunityMember(
     @Body() createCommunityMemberDto: CreateUserDto,
@@ -43,6 +45,7 @@ export class UsersController {
   }
 
   @Get('userByEmail')
+  @Auth('RESEARCHER')
   public async getUserByEmail(
     @Body() userEmailDto: UserEmailDto,
   ): Promise<UserResponse> {
