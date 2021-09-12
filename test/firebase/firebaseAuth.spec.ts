@@ -24,23 +24,17 @@ describe('FirebaseAuth', () => {
     // Complete firebase-admin mocks
     admin.initializeApp = jest.fn().mockReturnValue({
       auth: () => ({
-        verifyIdToken: jest.fn(
-          () =>
-            new Promise((resolve) => {
-              resolve({
-                uid: '123',
-              });
-            }),
+        verifyIdToken: jest.fn(() =>
+          Promise.resolve({
+            uid: '123',
+          }),
         ),
-        getUser: jest.fn(
-          () =>
-            new Promise((resolve) => {
-              resolve({
-                customClaims: {
-                  RESEARCHER: true,
-                },
-              });
-            }),
+        getUser: jest.fn(() =>
+          Promise.resolve({
+            customClaims: {
+              RESEARCHER: true,
+            },
+          }),
         ),
       }),
     });

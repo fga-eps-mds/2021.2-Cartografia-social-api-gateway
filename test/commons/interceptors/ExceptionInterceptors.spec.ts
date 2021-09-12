@@ -5,8 +5,9 @@ import {
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { throwError } from 'rxjs';
 import { ErrorInterceptor } from '../../../src/commons/interceptors/ExceptionInterceptor';
 

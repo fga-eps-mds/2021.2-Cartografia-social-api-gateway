@@ -1,13 +1,23 @@
-import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  UnauthorizedException,
+  ExecutionContext,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import { createMock } from '@golevelup/ts-jest';
-import { ExecutionContext } from '@nestjs/common';
 import { FirebaseAuth } from '../../../src/firebase/firebaseAuth';
 import { RolesGuard } from '../../../src/commons/guards/roles.guard';
 
 describe('RolesGuard', () => {
   let roleGuard: RolesGuard;
+  const switchToHttpImplementation = {
+    getRequest: () => ({
+      headers: {
+        authorization: 'Bearer giant_token_here',
+      },
+    }),
+  };
 
   const dynamicModule = (
     rolesValue?: string[],
@@ -42,13 +52,7 @@ describe('RolesGuard', () => {
   it('should return true when no roles assigned', async () => {
     const module = await dynamicModule(null);
     const mockExecutionContext = createMock<ExecutionContext>({
-      switchToHttp: () => ({
-        getRequest: () => ({
-          headers: {
-            authorization: 'Bearer giant_token_here',
-          },
-        }),
-      }),
+      switchToHttp: () => switchToHttpImplementation,
     });
 
     roleGuard = module.get<RolesGuard>(RolesGuard);
@@ -60,13 +64,7 @@ describe('RolesGuard', () => {
     const module = await dynamicModule(['RESEARCHER'], () => true);
 
     const mockExecutionContext = createMock<ExecutionContext>({
-      switchToHttp: () => ({
-        getRequest: () => ({
-          headers: {
-            authorization: 'Bearer giant_token_here',
-          },
-        }),
-      }),
+      switchToHttp: () => switchToHttpImplementation,
     });
 
     roleGuard = module.get<RolesGuard>(RolesGuard);
@@ -79,11 +77,7 @@ describe('RolesGuard', () => {
 
     const mockExecutionContext = createMock<ExecutionContext>({
       switchToHttp: () => ({
-        getRequest: () => ({
-          headers: {
-            authorization: 'Bearer giant_token_here',
-          },
-        }),
+        getRequest: () => switchToHttpImplementation,
       }),
     });
 
@@ -103,11 +97,7 @@ describe('RolesGuard', () => {
 
     const mockExecutionContext = createMock<ExecutionContext>({
       switchToHttp: () => ({
-        getRequest: () => ({
-          headers: {
-            authorization: 'Bearer giant_token_here',
-          },
-        }),
+        getRequest: () => switchToHttpImplementation,
       }),
     });
 

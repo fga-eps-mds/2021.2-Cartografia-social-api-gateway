@@ -7,14 +7,16 @@ import { UsersController } from '../../src/users/users.controller';
 import admin from 'firebase-admin';
 import { UserResponse } from '../../src/users/responses/user.response';
 import { IdResponseModel } from '../../src/responseModels/id';
+import { randomUUID } from 'crypto';
 
 jest.mock('firebase-admin');
 
 describe('UsersController', () => {
   let controller: UsersController;
+  const password = randomUUID();
 
   const customModule = async (fn: any) => {
-    return await Test.createTestingModule({
+    return Test.createTestingModule({
       providers: [
         Reflector,
         {
@@ -40,23 +42,17 @@ describe('UsersController', () => {
     // Complete firebase-admin mocks
     admin.initializeApp = jest.fn().mockReturnValue({
       auth: () => ({
-        verifyIdToken: jest.fn(
-          () =>
-            new Promise((resolve) => {
-              resolve({
-                uid: '123',
-              });
-            }),
+        verifyIdToken: jest.fn(() =>
+          Promise.resolve({
+            uid: '123',
+          }),
         ),
-        getUser: jest.fn(
-          () =>
-            new Promise((resolve) => {
-              resolve({
-                customClaims: {
-                  RESEARCHER: true,
-                },
-              });
-            }),
+        getUser: jest.fn(() =>
+          Promise.resolve({
+            customClaims: {
+              RESEARCHER: true,
+            },
+          }),
         ),
       }),
     });
@@ -85,7 +81,7 @@ describe('UsersController', () => {
         email: 'email@gmail.com',
         name: 'Example',
         cellPhone: '61992989898',
-        password: '12345678',
+        password: password,
       }),
     ).toBe(id);
   });
@@ -105,7 +101,7 @@ describe('UsersController', () => {
         email: 'email@gmail.com',
         name: 'Example',
         cellPhone: '61992989898',
-        password: '12345678',
+        password: password,
       }),
     ).toBe(id);
   });

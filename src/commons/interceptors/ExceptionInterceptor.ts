@@ -27,19 +27,14 @@ export class ErrorInterceptor implements NestInterceptor {
           switch (error.status) {
             case HttpStatus.BAD_REQUEST:
               throw new BadRequestException(errorMessage);
-              break;
             case HttpStatus.UNAUTHORIZED:
               throw new UnauthorizedException(errorMessage);
-              break;
             case HttpStatus.FORBIDDEN:
               throw new ForbiddenException(errorMessage);
-              break;
             case HttpStatus.NOT_FOUND:
               throw new NotFoundException(errorMessage);
-              break;
             case HttpStatus.CONFLICT:
               throw new ConflictException(errorMessage);
-              break;
             default:
               throw new InternalServerErrorException(errorMessage);
           }
