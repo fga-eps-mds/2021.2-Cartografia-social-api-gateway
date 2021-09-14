@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@golevelup/ts-jest": "^0.3.1",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.0.1",
     "@nestjs/core": "^8.0.0",
@@ -30,6 +31,9 @@
     "@nestjs/swagger": "^5.0.9",
     "amqp-connection-manager": "^3.6.0",
     "amqplib": "^0.8.0",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
+    "firebase-admin": "^9.11.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
@@ -79,7 +83,8 @@
       ".*\\.module\\.ts$",
       ".eslintrc.js",
       "/src/main.ts",
-      "/src/config/configuration.ts"
+      "/src/config/configuration.ts",
+      "/coverage/"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node"
