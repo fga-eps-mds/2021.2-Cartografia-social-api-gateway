@@ -14,7 +14,7 @@ export class ComunidadeController {
   constructor(
     @Inject('COMUNIDADE_SERVICE')
     private readonly comunidadeServiceClient: ClientProxy,
-  ) {}
+  ) { }
 
   async onApplicationBootstrap() {
     await this.comunidadeServiceClient.connect();
@@ -38,6 +38,17 @@ export class ComunidadeController {
     const result = await firstValueFrom<Question[]>(
       this.comunidadeServiceClient
         .send('getQuestionsToCreateCommunity', '')
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    return result;
+  }
+
+  @Get('questionsToGetHelp')
+  public async getQuestionsToGetHelp(): Promise<Question[]> {
+    const result = await firstValueFrom<Question[]>(
+      this.comunidadeServiceClient
+        .send('getQuestionsToGetHelp', '')
         .pipe(timeout(TEN_SECONDS)),
     );
 
