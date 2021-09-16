@@ -86,8 +86,8 @@ export class ComunidadeController {
 
   @Delete(':id')
   @HttpCode(204)
-  public async deleteCommunity(@Param('id') id: string): Promise<Community> {
-    return firstValueFrom<Community>(
+  public async deleteCommunity(@Param('id') id: string): Promise<boolean> {
+    return firstValueFrom<boolean>(
       this.comunidadeServiceClient
         .send('deleteCommunity', id)
         .pipe(timeout(TEN_SECONDS)),
