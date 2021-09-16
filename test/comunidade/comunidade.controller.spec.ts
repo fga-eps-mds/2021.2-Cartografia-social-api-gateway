@@ -46,6 +46,23 @@ describe('ComunidadeController', () => {
     expect(await controller.getQuestionsToCreateCommunity()).toBe(data);
   });
 
+  it('should return value from questionsToGetHelp', async () => {
+    const data = [
+      {
+        question: 'Question',
+        id: '321',
+      },
+    ];
+
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(data))),
+    );
+
+    controller = module.get<ComunidadeController>(ComunidadeController);
+
+    expect(await controller.getQuestionsToGetHelp()).toBe(data);
+  });
+
   it('should return value from sendAnswers', async () => {
     const id = '123';
     const answer = new Answer();
