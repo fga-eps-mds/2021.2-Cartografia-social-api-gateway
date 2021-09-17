@@ -7,8 +7,8 @@ import { UploadFileDto } from './dto/uploadFile.dto';
 
 const TEN_SECONDS = 10000;
 
-@ApiTags('midias')
-@Controller('midias')
+@ApiTags('midia')
+@Controller('midia')
 export class MidiaController {
   constructor(
     @Inject('MIDIA_SERVICE') private readonly midiaServiceClient: ClientProxy,
