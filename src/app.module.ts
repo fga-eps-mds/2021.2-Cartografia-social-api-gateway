@@ -6,6 +6,7 @@ import { UsersController } from './users/users.controller';
 import { ComunidadeController } from './comunidade/comunidade.controller';
 import { MapasController } from './mapas/mapas.controller';
 import { MidiaController } from './midia/midia.controller';
+import { FirebaseAuth } from './firebase/firebaseAuth';
 
 type MicrosserviceConfig = {
   queueName: string;
@@ -13,7 +14,12 @@ type MicrosserviceConfig = {
 };
 
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: ['.firebase.env'],
+      isGlobal: true,
+    }),
+  ],
   controllers: [
     UsersController,
     ComunidadeController,
@@ -81,6 +87,14 @@ type MicrosserviceConfig = {
         });
       },
       inject: [ConfigService],
+    },
+    {
+      provide: 'CONFIG',
+      useClass: ConfigService,
+    },
+    {
+      provide: FirebaseAuth,
+      useClass: FirebaseAuth,
     },
   ],
 })
