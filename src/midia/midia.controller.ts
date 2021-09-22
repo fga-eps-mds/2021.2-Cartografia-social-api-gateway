@@ -27,13 +27,13 @@ export class MidiaController {
     await this.midiaServiceClient.connect();
   }
 
-  @Get()
-  public async getMidiaByToken(): Promise<string> {
-    const midiaResponse: string = await firstValueFrom(
-      this.midiaServiceClient.send('findOneMidia', 30),
+  @Post('getUrl')
+  public async getMidiaUrl(@Body('id') id: string): Promise<string> {
+    const midiaUrl: string = await firstValueFrom(
+      this.midiaServiceClient.send('getUrl', id).pipe(timeout(TEN_SECONDS)),
     );
 
-    return midiaResponse;
+    return midiaUrl;
   }
 
   @Post('uploadMidia')

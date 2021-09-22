@@ -84,4 +84,18 @@ describe('MidiaController', () => {
 
     expect(await controller.uploadMidia(file)).toStrictEqual(result);
   });
+
+  it('should get url ', async () => {
+    const id = '123';
+
+    const url = 'aspdaw';
+
+    const module = await await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(url))),
+    );
+
+    controller = module.get<MidiaController>(MidiaController);
+
+    expect(await controller.getMidiaUrl(id)).toStrictEqual(url);
+  });
 });
