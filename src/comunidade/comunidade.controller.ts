@@ -18,6 +18,8 @@ import { SendSurverAnswersDto } from './dto/sendSurverAsnwers.dto';
 import { UpdateCommunityDto } from './dto/updateCommunity.dto';
 import { Community } from './entities/community.entity';
 import { Question } from './entities/question.entity';
+import { UserRelation } from './entities/userRelation.entity';
+import { CommunityUserDto } from './dto/communityUser.dto';
 
 const TEN_SECONDS = 10000;
 
@@ -108,5 +110,54 @@ export class ComunidadeController {
         .send('getCommunity', id)
         .pipe(timeout(TEN_SECONDS)),
     );
+  }
+
+  @Post('addUser')
+  public async addUser(
+    @Body() communityUser: CommunityUserDto,
+  ): Promise<IdResponseModel> {
+    const id: string = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('addUser', communityUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    
+    return { id };
+  }
+
+  @Get('getUsers')
+  public async getUsers(@Param('communityId') communityId: string): Promise<UserRelation[]> {
+    return firstValueFrom<UserRelation[]>(
+      this.comunidadeServiceClient
+        .send('getUsers', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );  
+  }
+
+  @Get('getCommunityUser')
+  public async getCommunityUser(
+    @Body() communityUser: CommunityUserDto,
+  ): Promise<IdResponseModel> {
+    const id: string = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunityUser', communityUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    
+    return { id };
+  }
+
+  @Delete('removeUser')
+  @HttpCode(204)
+  public async removeUser(
+    @Body() communityUser: CommunityUserDto,
+  ): Promise<IdResponseModel> {
+    const id: string = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('removeCommunityUser', communityUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    
+    return { id };
   }
 }
