@@ -115,14 +115,12 @@ export class ComunidadeController {
   @Post('addUser')
   public async addUser(
     @Body() communityUser: CommunityUserDto,
-  ): Promise<IdResponseModel> {
-    const id: string = await firstValueFrom(
+  ): Promise<UserRelation> {
+    return await firstValueFrom(
       this.comunidadeServiceClient
         .send('addUser', communityUser)
         .pipe(timeout(TEN_SECONDS)),
     );
-    
-    return { id };
   }
 
   @Get('getUsers')
@@ -137,14 +135,12 @@ export class ComunidadeController {
   @Get('getCommunityUser')
   public async getCommunityUser(
     @Body() communityUser: CommunityUserDto,
-  ): Promise<IdResponseModel> {
-    const id: string = await firstValueFrom(
+  ): Promise<UserRelation> {
+    return await firstValueFrom(
       this.comunidadeServiceClient
         .send('getCommunityUser', communityUser)
         .pipe(timeout(TEN_SECONDS)),
     );
-    
-    return { id };
   }
 
   @Delete('removeUser')
