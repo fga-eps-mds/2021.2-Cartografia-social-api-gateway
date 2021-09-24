@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Answer } from '../../src/comunidade/entities/asnwer.entity';
 import { ComunidadeController } from '../../src/comunidade/comunidade.controller';
 import { Community } from '../../src/comunidade/entities/community.entity';
+import { UserRelation } from '../../src/comunidade/entities/userRelation.entity';
 
 describe('ComunidadeController', () => {
   let controller: ComunidadeController;
@@ -150,5 +151,105 @@ describe('ComunidadeController', () => {
     controller = module.get<ComunidadeController>(ComunidadeController);
 
     expect(await controller.getCommunity(id)).toStrictEqual(community);
+  });
+
+  it('should add a user to a community', async () => {
+    const id = '999';
+
+    const userRelation: any = {
+      userId: '1234',
+      communityId: '4321',
+    };
+
+    const module = await customModule(
+      jest.fn(
+        () =>
+          new Observable((sub) => {
+            userRelation.id = id;
+            sub.next(userRelation);
+          }),
+      ),
+    );
+
+    controller = module.get<ComunidadeController>(ComunidadeController);
+
+    expect(await controller.addUser(userRelation)).toStrictEqual({
+      communityId: '4321',
+      id: '999',
+      userId: '1234',
+    });
+  });
+
+  it('should get users from a community', async () => {
+    const community = new Community();
+
+    community.id = '123';
+    community.name = 'Por do sol';
+    community.description = 'Comunidade pôr do sol';
+    community.imageUrl = null;
+
+    const userRelation = [
+      {
+        id: '1',
+        userId: '1236',
+        communityId: '123',
+      },
+      {
+        id: '3',
+        userId: '1235',
+        communityId: '123',
+      },
+    ];
+
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(userRelation))),
+    );
+
+    controller = module.get<ComunidadeController>(ComunidadeController);
+    expect(await controller.getUsers('123')).toStrictEqual(userRelation);
+  });
+
+  it('should get a user from a community', async () => {
+    const id = '1';
+
+    const userRelationToFind: any = {
+      userId: '1234',
+      communityId: '4321',
+    };
+
+    const result: any = new UserRelation();
+    result.communityId = userRelationToFind.communityId;
+    result.userId = userRelationToFind.userId;
+    result.id = id;
+
+    const module = await customModule(
+      jest.fn(
+        () =>
+          new Observable((sub) => {
+            sub.next(result);
+          }),
+      ),
+    );
+
+    controller = module.get<ComunidadeController>(ComunidadeController);
+
+    expect(await controller.getCommunityUser(userRelationToFind)).toStrictEqual(
+      result,
+    );
+  });
+
+  it('should remove users of a community', async () => {
+    const userRelationToRemove: any = {
+      userId: '1234',
+      communityId: '4321',
+    };
+
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(userRelationToRemove))),
+    );
+
+    controller = module.get<ComunidadeController>(ComunidadeController);
+
+    expect(await controller.removeUser(userRelationToRemove)).toBeTruthy();
   });
 });
