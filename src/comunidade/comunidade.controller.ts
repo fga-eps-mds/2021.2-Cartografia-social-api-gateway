@@ -29,7 +29,7 @@ export class ComunidadeController {
   constructor(
     @Inject('COMUNIDADE_SERVICE')
     private readonly comunidadeServiceClient: ClientProxy,
-  ) { }
+  ) {}
 
   async onApplicationBootstrap() {
     await this.comunidadeServiceClient.connect();
@@ -116,7 +116,7 @@ export class ComunidadeController {
   public async addUser(
     @Body() communityUser: CommunityUserDto,
   ): Promise<UserRelation> {
-    return await firstValueFrom(
+    return firstValueFrom(
       this.comunidadeServiceClient
         .send('addUser', communityUser)
         .pipe(timeout(TEN_SECONDS)),
@@ -124,19 +124,21 @@ export class ComunidadeController {
   }
 
   @Get('getUsers')
-  public async getUsers(@Param('communityId') communityId: string): Promise<UserRelation[]> {
+  public async getUsers(
+    @Param('communityId') communityId: string,
+  ): Promise<UserRelation[]> {
     return firstValueFrom<UserRelation[]>(
       this.comunidadeServiceClient
         .send('getUsers', communityId)
         .pipe(timeout(TEN_SECONDS)),
-    );  
+    );
   }
 
   @Get('getCommunityUser')
   public async getCommunityUser(
     @Body() communityUser: CommunityUserDto,
   ): Promise<UserRelation> {
-    return await firstValueFrom(
+    return firstValueFrom(
       this.comunidadeServiceClient
         .send('getCommunityUser', communityUser)
         .pipe(timeout(TEN_SECONDS)),
@@ -153,7 +155,7 @@ export class ComunidadeController {
         .send('removeCommunityUser', communityUser)
         .pipe(timeout(TEN_SECONDS)),
     );
-    
+
     return { id };
   }
 }
