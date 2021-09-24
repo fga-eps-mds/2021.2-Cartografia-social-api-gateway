@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Answer } from '../../src/comunidade/entities/asnwer.entity';
 import { ComunidadeController } from '../../src/comunidade/comunidade.controller';
 import { Community } from '../../src/comunidade/entities/community.entity';
+import { UserRelation } from '../../src/comunidade/entities/userRelation.entity';
 
 describe('ComunidadeController', () => {
   let controller: ComunidadeController;
@@ -134,7 +135,6 @@ describe('ComunidadeController', () => {
     expect(await controller.deleteCommunity('123')).toBeTruthy();
   });
 
-  
   it('should get a community', async () => {
     const id = '123';
 
@@ -162,12 +162,15 @@ describe('ComunidadeController', () => {
     };
 
     const module = await customModule(
-      jest.fn(() => new Observable((sub) => {
-        userRelation.id = id;
-        sub.next(userRelation)
-      })),
+      jest.fn(
+        () =>
+          new Observable((sub) => {
+            userRelation.id = id;
+            sub.next(userRelation);
+          }),
+      ),
     );
-    
+
     controller = module.get<ComunidadeController>(ComunidadeController);
 
     expect(await controller.addUser(userRelation)).toStrictEqual({
@@ -176,9 +179,8 @@ describe('ComunidadeController', () => {
       userId: '1234',
     });
   });
-  
-  it('should get users from a community', async () => {
 
+  it('should get users from a community', async () => {
     const community = new Community();
 
     community.id = '123';
@@ -215,26 +217,28 @@ describe('ComunidadeController', () => {
       communityId: '4321',
     };
 
+    const result: any = new UserRelation();
+    result.communityId = userRelationToFind.communityId;
+    result.userId = userRelationToFind.userId;
+    result.id = id;
+
     const module = await customModule(
-      jest.fn(() => new Observable((sub) => {
-        userRelationToFind.id = id;
-        sub.next(userRelationToFind)
-      })),
+      jest.fn(
+        () =>
+          new Observable((sub) => {
+            sub.next(result);
+          }),
+      ),
     );
 
     controller = module.get<ComunidadeController>(ComunidadeController);
 
     expect(await controller.getCommunityUser(userRelationToFind)).toStrictEqual(
-      {
-        id: '1',
-        userId: '1234',
-        communityId: '4321',
-      },
+      result,
     );
   });
 
   it('should remove users of a community', async () => {
-
     const userRelationToRemove: any = {
       userId: '1234',
       communityId: '4321',
