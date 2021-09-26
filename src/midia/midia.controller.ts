@@ -12,8 +12,7 @@ import { firstValueFrom, timeout } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { UploadFileDto } from './dto/uploadFile.dto';
-
-const TEN_SECONDS = 10000;
+import { TEN_SECONDS } from '../commons/constans';
 
 @ApiTags('midia')
 @Controller('midia')
