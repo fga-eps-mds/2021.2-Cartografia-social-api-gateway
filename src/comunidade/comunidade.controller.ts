@@ -19,6 +19,7 @@ import { UpdateCommunityDto } from './dto/updateCommunity.dto';
 import { Community } from './entities/community.entity';
 import { Question } from './entities/question.entity';
 import { UserRelation } from './entities/userRelation.entity';
+import { AdminUserRelation } from './entities/userAdminRelation.entity';
 import { CommunityUserDto } from './dto/communityUser.dto';
 
 const TEN_SECONDS = 10000;
@@ -29,7 +30,7 @@ export class ComunidadeController {
   constructor(
     @Inject('COMUNIDADE_SERVICE')
     private readonly comunidadeServiceClient: ClientProxy,
-  ) {}
+  ) { }
 
   async onApplicationBootstrap() {
     await this.comunidadeServiceClient.connect();
@@ -111,7 +112,6 @@ export class ComunidadeController {
         .pipe(timeout(TEN_SECONDS)),
     );
   }
-
   @Post('addUser')
   public async addUser(
     @Body() communityUser: CommunityUserDto,
@@ -157,5 +157,53 @@ export class ComunidadeController {
     );
 
     return { id };
+  }
+
+  @Post('addAdminUser')
+  public async addAdminUser(
+    @Body() communityAdminUser: CommunityUserDto,
+  ): Promise<AdminUserRelation> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('addAdminUser', communityAdminUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Delete('removeAdminUser')
+  @HttpCode(204)
+  public async removeAdminUser(
+    @Body() communityAdminUser: CommunityUserDto,
+  ): Promise<IdResponseModel> {
+    const id: string = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('removeAdminUser', communityAdminUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    return { id };
+  }
+
+  @Get('getAdminUsers')
+  public async getAdminUsers(
+    @Param('communityId') communityId: string,
+  ): Promise<UserRelation[]> {
+    return firstValueFrom<UserRelation[]>(
+      this.comunidadeServiceClient
+        .send('getAdminUsers', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get('getCommunityAdminUser')
+  public async getCommunityAdminUser(
+    @Body() communityAdminUser: CommunityUserDto,
+  ): Promise<UserRelation> {
+    console.log('test');
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunityAdminUser', communityAdminUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
   }
 }
