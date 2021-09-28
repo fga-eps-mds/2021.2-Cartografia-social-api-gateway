@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -79,7 +80,7 @@ export class ComunidadeController {
 
   @Get('getUsers')
   public async getUsers(
-    @Param('communityId') communityId: string,
+    @Query('communityId') communityId: string,
   ): Promise<UserRelation[]> {
     return firstValueFrom<UserRelation[]>(
       this.comunidadeServiceClient
@@ -140,7 +141,7 @@ export class ComunidadeController {
 
   @Get('getAdminUsers')
   public async getAdminUsers(
-    @Param('communityId') communityId: string,
+    @Query('communityId') communityId: string,
   ): Promise<UserRelation[]> {
     return firstValueFrom<UserRelation[]>(
       this.comunidadeServiceClient
