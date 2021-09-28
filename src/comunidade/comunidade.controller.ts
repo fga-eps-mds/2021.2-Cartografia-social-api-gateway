@@ -106,7 +106,7 @@ export class ComunidadeController {
   ): Promise<IdResponseModel> {
     const id: string = await firstValueFrom(
       this.comunidadeServiceClient
-        .send('removeCommunityUser', communityUser)
+        .send('removeUser', communityUser)
         .pipe(timeout(TEN_SECONDS)),
     );
 
@@ -153,7 +153,6 @@ export class ComunidadeController {
   public async getCommunityAdminUser(
     @Body() communityAdminUser: CommunityUserDto,
   ): Promise<UserRelation> {
-    console.log('test');
     return firstValueFrom(
       this.comunidadeServiceClient
         .send('getCommunityAdminUser', communityAdminUser)
