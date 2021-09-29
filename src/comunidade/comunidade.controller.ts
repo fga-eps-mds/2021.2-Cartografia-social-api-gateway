@@ -20,7 +20,6 @@ import { UpdateCommunityDto } from './dto/updateCommunity.dto';
 import { Community } from './entities/community.entity';
 import { Question } from './entities/question.entity';
 import { UserRelation } from './entities/userRelation.entity';
-import { AdminUserRelation } from './entities/userAdminRelation.entity';
 import { CommunityUserDto } from './dto/communityUser.dto';
 
 const TEN_SECONDS = 10000;
@@ -117,7 +116,7 @@ export class ComunidadeController {
   @Post('addAdminUser')
   public async addAdminUser(
     @Body() communityAdminUser: CommunityUserDto,
-  ): Promise<AdminUserRelation> {
+  ): Promise<UserRelation> {
     return firstValueFrom(
       this.comunidadeServiceClient
         .send('addAdminUser', communityAdminUser)
