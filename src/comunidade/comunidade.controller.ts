@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -29,7 +30,7 @@ export class ComunidadeController {
   constructor(
     @Inject('COMUNIDADE_SERVICE')
     private readonly comunidadeServiceClient: ClientProxy,
-  ) {}
+  ) { }
 
   async onApplicationBootstrap() {
     await this.comunidadeServiceClient.connect();
@@ -62,6 +63,99 @@ export class ComunidadeController {
     return firstValueFrom<Question[]>(
       this.comunidadeServiceClient
         .send('getQuestionsToGetHelp', '')
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+  @Post('addUser')
+  public async addUser(
+    @Body() communityUser: CommunityUserDto,
+  ): Promise<UserRelation> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('addUser', communityUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get('getUsers')
+  public async getUsers(
+    @Query('communityId') communityId: string,
+  ): Promise<UserRelation[]> {
+    return firstValueFrom<UserRelation[]>(
+      this.comunidadeServiceClient
+        .send('getUsers', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get('getCommunityUser')
+  public async getCommunityUser(
+    @Body() communityUser: CommunityUserDto,
+  ): Promise<UserRelation> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunityUser', communityUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Delete('removeUser')
+  @HttpCode(204)
+  public async removeUser(
+    @Body() communityUser: CommunityUserDto,
+  ): Promise<IdResponseModel> {
+    const id: string = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('removeUser', communityUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    return { id };
+  }
+
+  @Post('addAdminUser')
+  public async addAdminUser(
+    @Body() communityAdminUser: CommunityUserDto,
+  ): Promise<UserRelation> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('addAdminUser', communityAdminUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Delete('removeAdminUser')
+  @HttpCode(204)
+  public async removeAdminUser(
+    @Body() communityAdminUser: CommunityUserDto,
+  ): Promise<IdResponseModel> {
+    const id: string = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('removeAdminUser', communityAdminUser)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    return { id };
+  }
+
+  @Get('getAdminUsers')
+  public async getAdminUsers(
+    @Query('communityId') communityId: string,
+  ): Promise<UserRelation[]> {
+    return firstValueFrom<UserRelation[]>(
+      this.comunidadeServiceClient
+        .send('getAdminUsers', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get('getCommunityAdminUser')
+  public async getCommunityAdminUser(
+    @Body() communityAdminUser: CommunityUserDto,
+  ): Promise<UserRelation> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunityAdminUser', communityAdminUser)
         .pipe(timeout(TEN_SECONDS)),
     );
   }
@@ -110,52 +204,5 @@ export class ComunidadeController {
         .send('getCommunity', id)
         .pipe(timeout(TEN_SECONDS)),
     );
-  }
-
-  @Post('addUser')
-  public async addUser(
-    @Body() communityUser: CommunityUserDto,
-  ): Promise<UserRelation> {
-    return firstValueFrom(
-      this.comunidadeServiceClient
-        .send('addUser', communityUser)
-        .pipe(timeout(TEN_SECONDS)),
-    );
-  }
-
-  @Get('getUsers')
-  public async getUsers(
-    @Param('communityId') communityId: string,
-  ): Promise<UserRelation[]> {
-    return firstValueFrom<UserRelation[]>(
-      this.comunidadeServiceClient
-        .send('getUsers', communityId)
-        .pipe(timeout(TEN_SECONDS)),
-    );
-  }
-
-  @Get('getCommunityUser')
-  public async getCommunityUser(
-    @Body() communityUser: CommunityUserDto,
-  ): Promise<UserRelation> {
-    return firstValueFrom(
-      this.comunidadeServiceClient
-        .send('getCommunityUser', communityUser)
-        .pipe(timeout(TEN_SECONDS)),
-    );
-  }
-
-  @Delete('removeUser')
-  @HttpCode(204)
-  public async removeUser(
-    @Body() communityUser: CommunityUserDto,
-  ): Promise<IdResponseModel> {
-    const id: string = await firstValueFrom(
-      this.comunidadeServiceClient
-        .send('removeCommunityUser', communityUser)
-        .pipe(timeout(TEN_SECONDS)),
-    );
-
-    return { id };
   }
 }
