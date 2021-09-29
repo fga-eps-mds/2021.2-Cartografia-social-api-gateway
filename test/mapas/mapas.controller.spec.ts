@@ -56,4 +56,57 @@ describe('MapasController', () => {
       }),
     ).toBe(id);
   });
+
+  it('Create a area ', async () => {
+    const id = { id: '123' };
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(id))),
+    );
+
+    controller = module.get<MapasController>(MapasController);
+
+    expect(
+      await controller.createArea({
+        title: 'teste',
+        description: 'teste',
+        coordinates: [
+          { latitude: 0, longitude: 0 },
+          { latitude: 1, longitude: 1 },
+          { latitude: 2, longitude: 2 },
+        ],
+      }),
+    ).toBe(id);
+  });
+
+  it('Get a area ', async () => {
+    const response = {
+      title: 'teste',
+      description: 'teste',
+      coordinates: [
+        { latitude: 0, longitude: 0 },
+        { latitude: 1, longitude: 1 },
+        { latitude: 2, longitude: 2 },
+      ],
+      id: '123',
+    };
+    const id = { id: '123' };
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(response))),
+    );
+
+    controller = module.get<MapasController>(MapasController);
+
+    expect(await controller.getArea(id.id)).toStrictEqual(response);
+  });
+
+  it('Delete a area ', async () => {
+    const id = { id: '123' };
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(true))),
+    );
+
+    controller = module.get<MapasController>(MapasController);
+
+    expect(await controller.deleteArea(id.id)).toBe(true);
+  });
 });

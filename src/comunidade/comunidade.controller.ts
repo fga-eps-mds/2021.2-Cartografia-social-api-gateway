@@ -13,7 +13,7 @@ import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 import { firstValueFrom, timeout } from 'rxjs';
-import { IdResponseModel } from 'src/responseModels/id';
+import { IdResponseModel } from '../responseModels/id';
 import { CreateCommunityDto } from './dto/createCommunity.dto';
 import { SendSurverAnswersDto } from './dto/sendSurverAsnwers.dto';
 import { UpdateCommunityDto } from './dto/updateCommunity.dto';
@@ -21,8 +21,7 @@ import { Community } from './entities/community.entity';
 import { Question } from './entities/question.entity';
 import { UserRelation } from './entities/userRelation.entity';
 import { CommunityUserDto } from './dto/communityUser.dto';
-
-const TEN_SECONDS = 10000;
+import { TEN_SECONDS } from '../commons/constans';
 
 @ApiTags('Comunidades')
 @Controller('community')
