@@ -17,37 +17,48 @@ Repositório do gateway  do projeto da Cartografia social
 
 ## [**Dependências**](#Sumário)
 
-Para a execução local da Wiki do projeto serão necessárias as seguintes dependências:
+Para a execução local da aplicação será necessário ter instaladas as seguintes ferramentas:
 
-* [NodeJs](https://nodejs.org/en/)
-* [VSCode](https://code.visualstudio.com/) (Opcional)
+* [Npm](https://docs.npmjs.com/getting-started)
+* [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## [**Execução**](#Sumário)
 
-### Installation
+### **Instalação**
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fga-eps-mds_2021.1-Cartografia-social-api-gateway&metric=alert_status)](https://sonarcloud.io/dashboard?id=fga-eps-mds_2021.1-Cartografia-social-api-gateway)
 
 [![Coverage Status](https://coveralls.io/repos/github/fga-eps-mds/2021.1-Cartografia-social-api-gateway/badge.svg?branch=main)](https://coveralls.io/github/fga-eps-mds/2021.1-Cartografia-social-api-gateway?branch=main)
 
+### Faça um clone do repositório
+
 ```bash
+$ git clone https://github.com/fga-eps-mds/2021.1-Cartografia-social-api-gateway
+```
+
+### Instalando as dependências e Configurando variáveis de ambiente
+
+```bash
+$ cd 2021.1-Cartografia-social-api-gateway
 $ npm install
 ```
+Crie um projeto no [firebase](https://firebase.google.com/docs/android/setup?hl=pt) e crie um arquivo '.firebase.env.' no diretório raiz. Se baseie no arquivo '.firebase.env.example' para o preenchimento das configurações.
 
-### Running the app
+### Executando a aplicação
+Escolha um dos ambientes para a execução
 
 ```bash
-# development
-$ npm run start
+# development ambient
+$ docker-compose up gateway-dev mongo
 
-# watch mode
-$ npm run start:dev
+# debug ambient
+$ docker-compose up gateway-debug mongo
 
 # production mode
-$ npm run start:prod
+$ docker-compose up gateway-prod mongo
 ```
 
-### Test
+### Testes
 
 ```bash
 # unit tests
