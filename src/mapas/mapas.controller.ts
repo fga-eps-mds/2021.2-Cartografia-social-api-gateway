@@ -41,7 +41,7 @@ export class MapasController {
   }
 
   @Get('point')
-  public async getPoint(@Body() id: string): Promise<CreatePointDto> {
+  public async getPoint(@Body('id') id: string): Promise<CreatePointDto> {
     const mapaResponse = await firstValueFrom<CreatePointDto>(
       this.mapaServiceClient.send('getPoint', id),
     );

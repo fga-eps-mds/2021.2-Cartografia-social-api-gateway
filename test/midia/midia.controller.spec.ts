@@ -98,4 +98,16 @@ describe('MidiaController', () => {
 
     expect(await controller.getMidiaUrl(id)).toStrictEqual(url);
   });
+
+  it('Delete a midia ', async () => {
+    const id = { id: '123' };
+    const response = { result: 'ok' };
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next(response))),
+    );
+
+    controller = module.get<MidiaController>(MidiaController);
+
+    expect(await controller.removeMidia(id.id)).toStrictEqual(response);
+  });
 });
