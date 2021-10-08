@@ -4,6 +4,7 @@ import { Answer } from '../../src/comunidade/entities/asnwer.entity';
 import { ComunidadeController } from '../../src/comunidade/comunidade.controller';
 import { Community } from '../../src/comunidade/entities/community.entity';
 import { UserRelation } from '../../src/comunidade/entities/userRelation.entity';
+import { Question } from '../../src/comunidade/entities/question.entity';
 
 describe('ComunidadeController', () => {
   let controller: ComunidadeController;
@@ -32,27 +33,25 @@ describe('ComunidadeController', () => {
   });
 
   it('should return value from questionsToCreateCommunity', async () => {
-    const data = [
-      {
-        id: '1',
-        question: 'Nome completo',
-        formName: 'createCommunity',
-        fieldType: 'textField',
-        placeholder: 'Digite sua resposta...',
-        validationRegex: '.+',
-        errorMessage: 'O campo não pode estar em branco',
-        optional: false,
-        orderInForm: '1', 
-      },
-    ];
+    const question = new Question();
+
+    question.id = '1';
+    question.question = 'Nome completo';
+    question.formName = 'createCommunity';
+    question.fieldType = 'textField';
+    question.placeholder = 'Digite sua resposta...';
+    question.validationRegex = '.+';
+    question.errorMessage = 'O campo não pode estar em branco';
+    question.optional = false;
+    question.orderInForm = 1;
 
     const module = await customModule(
-      jest.fn(() => new Observable((sub) => sub.next(data))),
+      jest.fn(() => new Observable((sub) => sub.next(question))),
     );
 
     controller = module.get<ComunidadeController>(ComunidadeController);
 
-    expect(await controller.getQuestionsToCreateCommunity()).toBe(data);
+    expect(await controller.getQuestionsToCreateCommunity()).toBe(question);
   });
 
   it('should return value from questionsToGetHelp', async () => {
@@ -332,9 +331,9 @@ describe('ComunidadeController', () => {
 
     controller = module.get<ComunidadeController>(ComunidadeController);
 
-    expect(await controller.getCommunityAdminUser(userRelationToFind)).toStrictEqual(
-      result,
-    );
+    expect(
+      await controller.getCommunityAdminUser(userRelationToFind),
+    ).toStrictEqual(result);
   });
 
   it('should remove users of a community', async () => {

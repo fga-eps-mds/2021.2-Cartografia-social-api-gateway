@@ -29,7 +29,7 @@ export class ComunidadeController {
   constructor(
     @Inject('COMUNIDADE_SERVICE')
     private readonly comunidadeServiceClient: ClientProxy,
-  ) { }
+  ) {}
 
   async onApplicationBootstrap() {
     await this.comunidadeServiceClient.connect();
