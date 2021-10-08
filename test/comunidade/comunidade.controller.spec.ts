@@ -34,8 +34,15 @@ describe('ComunidadeController', () => {
   it('should return value from questionsToCreateCommunity', async () => {
     const data = [
       {
-        question: 'Nome',
-        id: '123',
+        id: '1',
+        question: 'Nome completo',
+        formName: 'createCommunity',
+        fieldType: 'textField',
+        placeholder: 'Digite sua resposta...',
+        validationRegex: '.+',
+        errorMessage: 'O campo não pode estar em branco',
+        optional: false,
+        orderInForm: '1', 
       },
     ];
 
@@ -51,8 +58,15 @@ describe('ComunidadeController', () => {
   it('should return value from questionsToGetHelp', async () => {
     const data = [
       {
-        question: 'Question',
-        id: '321',
+        id: '2',
+        question: 'Nome completo',
+        formName: 'getHelpForm',
+        fieldType: 'textField',
+        placeholder: 'Digite sua resposta...',
+        validationRegex: '.+',
+        errorMessage: 'O campo não pode estar em branco',
+        optional: false,
+        orderInForm: '1',
       },
     ];
 
