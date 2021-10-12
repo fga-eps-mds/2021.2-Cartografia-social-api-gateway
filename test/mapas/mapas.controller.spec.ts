@@ -87,10 +87,9 @@ describe('MapasController', () => {
 
     expect(
       await controller.updatePoint({
+        id: id,
         title: 'setor leste',
         description: 'setor leste',
-        latitude: -16.0122492,
-        longitude: -48.0550158,
       }),
     ).toStrictEqual(id);
   });
@@ -159,13 +158,9 @@ describe('MapasController', () => {
 
     expect(
       await controller.updateArea({
+        id: id,
         title: 'teste',
         description: 'teste',
-        coordinates: [
-          { latitude: 0, longitude: 0 },
-          { latitude: 1, longitude: 1 },
-          { latitude: 2, longitude: 2 },
-        ],
       }),
     ).toStrictEqual(id);
   });
