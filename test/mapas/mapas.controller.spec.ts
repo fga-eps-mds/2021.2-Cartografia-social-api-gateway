@@ -6,13 +6,27 @@ import { PointDto } from '../../src/mapas/dto/point.dto';
 import { MapasController } from '../../src/mapas/mapas.controller';
 import admin from 'firebase-admin';
 import { RolesGuard } from '../../src/commons/guards/roles.guard';
-import { CanActivate } from '@nestjs/common';
+import { CanActivate, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '../../src/config/configuration';
+import { CommunityOperationDto } from 'src/mapas/dto/communityOperation.dto';
+import { CommunityDto } from 'src/comunidade/dto/community.dto';
+import { CommunityMapDataDto } from 'src/mapas/dto/communityMapData.dto';
 
 jest.mock('firebase-admin');
 
 describe('MapasController', () => {
   let controller: MapasController;
+
+  const defaultCommunityDto = <CommunityDto>{
+    id: '111',
+    name: 'community',
+    description: 'description',
+    imageUrl: null,
+  };
+  const defaultCommunityMapDataDto = <CommunityMapDataDto>{
+    points: [],
+    areas: [],
+  };
 
   const customModule = async (fn: any, communityFn = jest.fn()) => {
     return await Test.createTestingModule({
@@ -250,5 +264,37 @@ describe('MapasController', () => {
     controller = module.get<MapasController>(MapasController);
 
     expect(await controller.removeMediaFromPoint(midiaRelation)).toBe(true);
+  });
+
+  it('should add point to community ', async () => {
+    const communityOperation = <CommunityOperationDto>{
+      locationId: '123',
+      userEmail: 'mail@mail.com',
+    };
+    const module = await customModule(
+      jest.fn(() => new Observable((sub) => sub.next('123'))),
+      jest.fn(() => new Observable((sub) => sub.next(defaultCommunityDto))),
+    );
+
+    controller = module.get<MapasController>(MapasController);
+
+    expect(await controller.addToCommunity(communityOperation)).toBe(
+      HttpStatus.OK,
+    );
+  });
+
+  it('should get community map data ', async () => {
+    const module = await customModule(
+      jest.fn(
+        () => new Observable((sub) => sub.next(defaultCommunityMapDataDto)),
+      ),
+      jest.fn(() => new Observable((sub) => sub.next(defaultCommunityDto))),
+    );
+
+    controller = module.get<MapasController>(MapasController);
+
+    expect(await controller.getCommunityData('mail@mail.com')).toBe(
+      defaultCommunityMapDataDto,
+    );
   });
 });
