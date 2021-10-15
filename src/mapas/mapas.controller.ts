@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
   HttpStatus,
   Inject,
   Param,
@@ -13,7 +12,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 import { firstValueFrom, timeout } from 'rxjs';
-import { Auth } from 'src/commons/decorators/auth.decorator';
+import { Auth } from '../commons/decorators/auth.decorator';
 import { CommunityDto } from 'src/comunidade/dto/community.dto';
 import { TEN_SECONDS } from '../commons/constans';
 import { IdResponseModel } from '../responseModels/id';

@@ -1,4 +1,4 @@
 export class CommunityUserDto {
-    userId: string;
-    communityId: string;
+  userId: string;
+  communityId: string;
 }
