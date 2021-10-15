@@ -17,6 +17,8 @@ import { AreaDto } from './dto/area.dto';
 import { CreateAreaDto } from './dto/create-area.dto';
 import { CreatePointDto } from './dto/createPoint.dto';
 import { MediaRelationDto } from './dto/media-relation.dto';
+import { UpdateAreaDto } from './dto/update-area.dto';
+import { UpdatePointDto } from './dto/update-point.dto';
 
 @ApiTags('maps')
 @Controller('maps')
@@ -51,10 +53,10 @@ export class MapasController {
 
   @Put('point')
   public async updatePoint(
-    @Body() createPointDto: CreatePointDto,
+    @Body() updatePointDto: UpdatePointDto,
   ): Promise<IdResponseModel> {
     const mapaResponse = await firstValueFrom<IdResponseModel>(
-      this.mapaServiceClient.send('updatePoint', createPointDto),
+      this.mapaServiceClient.send('updatePoint', updatePointDto),
     );
 
     return mapaResponse;
@@ -84,11 +86,11 @@ export class MapasController {
 
   @Put('area')
   public async updateArea(
-    @Body() createAreaDto: CreateAreaDto,
+    @Body() updateAreaDto: UpdateAreaDto,
   ): Promise<IdResponseModel> {
     const mapaResponse = await firstValueFrom<IdResponseModel>(
       this.mapaServiceClient
-        .send('updateArea', createAreaDto)
+        .send('updateArea', updateAreaDto)
         .pipe(timeout(TEN_SECONDS)),
     );
 
