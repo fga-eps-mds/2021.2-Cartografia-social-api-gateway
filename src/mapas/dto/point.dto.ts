@@ -1,9 +1,9 @@
 import { MediaRelationDto } from './media-relation.dto';
 
-export class AreaDto {
+export class PointDto {
   title: string;
   description?: string;
-  type = 'Polygon';
-  coordinates: number[][][];
+  type = 'Point';
+  coordinates: number[];
   medias: MediaRelationDto[];
 }

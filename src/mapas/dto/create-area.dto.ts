@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import { ArrayMinSize, IsArray, ValidateNested } from 'class-validator';
-import { Coordinates } from './area.dto';
 
 export class CreateAreaDto {
   title: string;
@@ -13,4 +12,9 @@ export class CreateAreaDto {
   })
   @Type(() => Coordinates)
   coordinates: Coordinates[];
+}
+
+export class Coordinates {
+  latitude: number;
+  longitude: number;
 }

@@ -17,6 +17,7 @@ import { AreaDto } from './dto/area.dto';
 import { CreateAreaDto } from './dto/create-area.dto';
 import { CreatePointDto } from './dto/createPoint.dto';
 import { MediaRelationDto } from './dto/media-relation.dto';
+import { PointDto } from './dto/point.dto';
 import { UpdateAreaDto } from './dto/update-area.dto';
 import { UpdatePointDto } from './dto/update-point.dto';
 
@@ -43,8 +44,8 @@ export class MapasController {
   }
 
   @Get('point')
-  public async getPoint(@Body('id') id: string): Promise<CreatePointDto> {
-    const mapaResponse = await firstValueFrom<CreatePointDto>(
+  public async getPoint(@Body('id') id: string): Promise<PointDto> {
+    const mapaResponse = await firstValueFrom<PointDto>(
       this.mapaServiceClient.send('getPoint', id),
     );
 
@@ -64,7 +65,7 @@ export class MapasController {
 
   @Delete('point')
   public async deletePoint(@Body('id') id: string): Promise<boolean> {
-    await firstValueFrom<CreatePointDto>(
+    await firstValueFrom<boolean>(
       this.mapaServiceClient.send('deletePoint', id),
     );
 
@@ -99,14 +100,14 @@ export class MapasController {
 
   @Get('area/:id')
   public async getArea(@Param('id') id: string): Promise<AreaDto> {
-    return await firstValueFrom<AreaDto>(
+    return firstValueFrom<AreaDto>(
       this.mapaServiceClient.send('getArea', id).pipe(timeout(TEN_SECONDS)),
     );
   }
 
   @Delete('area/:id')
   public async deleteArea(@Param('id') id: string): Promise<boolean> {
-    await firstValueFrom<AreaDto>(
+    await firstValueFrom<boolean>(
       this.mapaServiceClient.send('deleteArea', id).pipe(timeout(TEN_SECONDS)),
     );
     return true;
