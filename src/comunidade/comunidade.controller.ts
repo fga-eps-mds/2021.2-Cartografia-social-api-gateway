@@ -22,6 +22,7 @@ import { Question } from './entities/question.entity';
 import { UserRelation } from './entities/userRelation.entity';
 import { CommunityUserDto } from './dto/communityUser.dto';
 import { TEN_SECONDS } from '../commons/constans';
+import { UserResponse } from 'src/users/responses/user.response';
 
 @ApiTags('Comunidades')
 @Controller('community')
@@ -201,6 +202,24 @@ export class ComunidadeController {
     return firstValueFrom<Community>(
       this.comunidadeServiceClient
         .send('getCommunity', id)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get('listCommunities')
+  public async listCommunities(): Promise<Community[]> {
+    return firstValueFrom<Community[]>(
+      this.comunidadeServiceClient
+        .send('listCommunities', '')
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get('listUsers')
+  public async listUsers(): Promise<UserResponse[]> {
+    return firstValueFrom<UserResponse[]>(
+      this.comunidadeServiceClient
+        .send('listUsers', '')
         .pipe(timeout(TEN_SECONDS)),
     );
   }
