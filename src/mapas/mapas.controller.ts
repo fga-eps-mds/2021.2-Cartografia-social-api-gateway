@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Inject,
   Param,
   Post,
@@ -11,9 +13,13 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 import { firstValueFrom, timeout } from 'rxjs';
+import { Auth } from 'src/commons/decorators/auth.decorator';
+import { CommunityDto } from 'src/comunidade/dto/community.dto';
 import { TEN_SECONDS } from '../commons/constans';
 import { IdResponseModel } from '../responseModels/id';
 import { AreaDto } from './dto/area.dto';
+import { CommunityMapDataDto } from './dto/communityMapData.dto';
+import { CommunityOperationDto } from './dto/communityOperation.dto';
 import { CreateAreaDto } from './dto/create-area.dto';
 import { CreatePointDto } from './dto/createPoint.dto';
 import { MediaRelationDto } from './dto/media-relation.dto';
@@ -26,6 +32,8 @@ import { UpdatePointDto } from './dto/update-point.dto';
 export class MapasController {
   constructor(
     @Inject('MAPA_SERVICE') private readonly mapaServiceClient: ClientProxy,
+    @Inject('COMUNIDADE_SERVICE')
+    private readonly comunidadeServiceClient: ClientProxy,
   ) {}
 
   async onApplicationBootstrap() {
@@ -135,5 +143,48 @@ export class MapasController {
         .pipe(timeout(TEN_SECONDS)),
     );
     return true;
+  }
+
+  @Post('addToCommunity')
+  @Auth('RESEARCHER', 'COMMUNITY_MEMBER', 'ADMIN')
+  public async addToCommunity(
+    @Body() communityOperationDto: CommunityOperationDto,
+  ): Promise<HttpStatus> {
+    const userCommunity = await firstValueFrom<CommunityDto>(
+      this.comunidadeServiceClient
+        .send('getUserCommunity', communityOperationDto.userEmail)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    await firstValueFrom<IdResponseModel>(
+      this.mapaServiceClient
+        .send('addToCommunity', {
+          communityId: userCommunity.id,
+          locationId: communityOperationDto.locationId,
+        })
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    return HttpStatus.OK;
+  }
+
+  @Get('communityDataByUserEmail/:email')
+  @Auth('RESEARCHER', 'COMMUNITY_MEMBER', 'ADMIN')
+  public async getCommunityData(
+    @Param('email') userEmail: string,
+  ): Promise<CommunityMapDataDto> {
+    const userCommunity = await firstValueFrom<CommunityDto>(
+      this.comunidadeServiceClient
+        .send('getUserCommunity', userEmail)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    const communityMapData = await firstValueFrom<CommunityMapDataDto>(
+      this.mapaServiceClient
+        .send('getCommunityData', userCommunity.id)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    return communityMapData;
   }
 }
