@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
+import { AreaDto } from '../../src/mapas/dto/area.dto';
+import { PointDto } from '../../src/mapas/dto/point.dto';
 import { MapasController } from '../../src/mapas/mapas.controller';
 
 describe('MapasController', () => {
@@ -57,12 +59,11 @@ describe('MapasController', () => {
     ).toBe(id);
   });
 
-  it('Get a area ', async () => {
-    const response = {
+  it('Get a point ', async () => {
+    const response = <PointDto>{
       title: 'string',
       description: 'string',
-      latitude: 123,
-      longitude: 321,
+      coordinates: [123, 321],
       id: '123',
     };
     const id = { id: '123' };
@@ -127,15 +128,19 @@ describe('MapasController', () => {
   });
 
   it('Get a area ', async () => {
-    const response = {
+    const response = <AreaDto>{
+      id: '123',
       title: 'teste',
       description: 'teste',
+      type: 'Polygon',
       coordinates: [
-        { latitude: 0, longitude: 0 },
-        { latitude: 1, longitude: 1 },
-        { latitude: 2, longitude: 2 },
+        [
+          [0, 0],
+          [1, 1],
+          [2, 2],
+        ],
       ],
-      id: '123',
+      medias: [],
     };
     const id = { id: '123' };
     const module = await customModule(
