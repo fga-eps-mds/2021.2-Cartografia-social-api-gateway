@@ -1,13 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Observable } from 'rxjs';
+import { FirebaseAuth } from '../../src/firebase/firebaseAuth';
 import { AreaDto } from '../../src/mapas/dto/area.dto';
 import { PointDto } from '../../src/mapas/dto/point.dto';
 import { MapasController } from '../../src/mapas/mapas.controller';
+import admin from 'firebase-admin';
+import { RolesGuard } from '../../src/commons/guards/roles.guard';
+import { CanActivate } from '@nestjs/common';
+import { ConfigService } from '../../src/config/configuration';
+
+jest.mock('firebase-admin');
 
 describe('MapasController', () => {
   let controller: MapasController;
 
-  const customModule = async (fn: any) => {
+  const customModule = async (fn: any, communityFn = jest.fn()) => {
     return await Test.createTestingModule({
       providers: [
         {
@@ -16,12 +23,45 @@ describe('MapasController', () => {
             send: fn,
           },
         },
+        {
+          provide: FirebaseAuth,
+          useClass: FirebaseAuth,
+        },
+        {
+          provide: 'COMUNIDADE_SERVICE',
+          useValue: {
+            send: communityFn,
+          },
+        },
+        {
+          provide: 'CONFIG',
+          useClass: ConfigService,
+        },
       ],
       controllers: [MapasController],
     }).compile();
   };
 
   beforeEach(async () => {
+    const mockRolesGuard: CanActivate = { canActivate: jest.fn(() => true) };
+
+    admin.initializeApp = jest.fn().mockReturnValue({
+      auth: () => ({
+        verifyIdToken: jest.fn(() =>
+          Promise.resolve({
+            uid: '123',
+          }),
+        ),
+        getUser: jest.fn(() =>
+          Promise.resolve({
+            customClaims: {
+              RESEARCHER: true,
+            },
+          }),
+        ),
+      }),
+    });
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
@@ -30,9 +70,18 @@ describe('MapasController', () => {
             send: jest.fn(),
           },
         },
+        {
+          provide: 'COMUNIDADE_SERVICE',
+          useValue: {
+            send: jest.fn(),
+          },
+        },
       ],
       controllers: [MapasController],
-    }).compile();
+    })
+      .overrideGuard(RolesGuard)
+      .useValue(mockRolesGuard)
+      .compile();
 
     controller = module.get<MapasController>(MapasController);
   });
