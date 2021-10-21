@@ -3,32 +3,64 @@ import { Observable } from 'rxjs';
 import { Answer } from '../../src/comunidade/entities/asnwer.entity';
 import { ComunidadeController } from '../../src/comunidade/comunidade.controller';
 import { Community } from '../../src/comunidade/entities/community.entity';
+import admin from 'firebase-admin';
 import { UserRelation } from '../../src/comunidade/entities/userRelation.entity';
 import { Question } from '../../src/comunidade/entities/question.entity';
+import { FirebaseAuth } from '../../src/firebase/firebaseAuth';
+import { ConfigService } from '@nestjs/config';
+import { Reflector } from '@nestjs/core';
+
+jest.mock('firebase-admin');
 
 describe('ComunidadeController', () => {
   let controller: ComunidadeController;
   const customModule = async (fn: any) => {
     return await Test.createTestingModule({
       providers: [
+        Reflector,
         {
           provide: 'COMUNIDADE_SERVICE',
           useValue: {
             send: fn,
           },
         },
+        {
+          provide: FirebaseAuth,
+          useClass: FirebaseAuth,
+        },
+        {
+          provide: 'CONFIG',
+          useClass: ConfigService,
+        },
       ],
       controllers: [ComunidadeController],
     }).compile();
   };
-
-  beforeEach(async () => {
-    const module = await customModule(jest.fn());
-
-    controller = module.get<ComunidadeController>(ComunidadeController);
+  beforeEach(() => {
+    // Complete firebase-admin mocks
+    admin.initializeApp = jest.fn().mockReturnValue({
+      auth: () => ({
+        verifyIdToken: jest.fn(() =>
+          Promise.resolve({
+            uid: '123',
+          }),
+        ),
+        getUser: jest.fn(() =>
+          Promise.resolve({
+            customClaims: {
+              RESEARCHER: true,
+            },
+          }),
+        ),
+      }),
+    });
   });
 
-  it('should be defined', () => {
+  it('should be defined',async () => {
+    const module = await customModule(jest.fn());
+    
+    controller = module.get<ComunidadeController>(ComunidadeController);
+
     expect(controller).toBeDefined();
   });
 
