@@ -23,6 +23,7 @@ import { UserRelation } from './entities/userRelation.entity';
 import { CommunityUserDto } from './dto/communityUser.dto';
 import { TEN_SECONDS } from '../commons/constans';
 import { UserResponse } from 'src/users/responses/user.response';
+import { Auth } from '../commons/decorators/auth.decorator';
 
 @ApiTags('Comunidades')
 @Controller('community')
@@ -161,6 +162,7 @@ export class ComunidadeController {
   }
 
   @Post()
+  @Auth('RESEARCHER')
   public async createCommunity(
     @Body() createCommunityDto: CreateCommunityDto,
   ): Promise<IdResponseModel> {
