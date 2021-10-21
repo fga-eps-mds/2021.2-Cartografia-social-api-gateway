@@ -223,4 +223,13 @@ export class ComunidadeController {
         .pipe(timeout(TEN_SECONDS)),
     );
   }
+
+  @Get('getUsersWithoutACommunity')
+  public async getUsersWithoutACommunity(): Promise<UserResponse[]> {
+    return firstValueFrom<UserResponse[]>(
+      this.comunidadeServiceClient
+        .send('getUsersWithouACommunity', '')
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
 }
