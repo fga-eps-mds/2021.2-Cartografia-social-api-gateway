@@ -199,15 +199,6 @@ export class ComunidadeController {
     );
   }
 
-  @Get(':id')
-  public async getCommunity(@Param('id') id: string): Promise<Community> {
-    return firstValueFrom<Community>(
-      this.comunidadeServiceClient
-        .send('getCommunity', id)
-        .pipe(timeout(TEN_SECONDS)),
-    );
-  }
-
   @Get('listCommunities')
   public async listCommunities(): Promise<Community[]> {
     return firstValueFrom<Community[]>(
@@ -231,6 +222,15 @@ export class ComunidadeController {
     return firstValueFrom<UserResponse[]>(
       this.comunidadeServiceClient
         .send('getUsersWithouACommunity', '')
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get(':id')
+  public async getCommunity(@Param('id') id: string): Promise<Community> {
+    return firstValueFrom<Community>(
+      this.comunidadeServiceClient
+        .send('getCommunity', id)
         .pipe(timeout(TEN_SECONDS)),
     );
   }

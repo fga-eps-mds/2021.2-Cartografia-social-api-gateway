@@ -56,9 +56,9 @@ describe('ComunidadeController', () => {
     });
   });
 
-  it('should be defined',async () => {
+  it('should be defined', async () => {
     const module = await customModule(jest.fn());
-    
+
     controller = module.get<ComunidadeController>(ComunidadeController);
 
     expect(controller).toBeDefined();
