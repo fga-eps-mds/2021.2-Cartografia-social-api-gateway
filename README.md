@@ -45,6 +45,19 @@ $ npm install
 Crie um projeto no [firebase](https://firebase.google.com/docs/android/setup?hl=pt) e crie um arquivo '.firebase.env.' no diretório raiz. Se baseie no arquivo '.firebase.env.example' para o preenchimento das configurações.
 
 ### Executando a aplicação
+
+Para buildar a aplicação os seguintes comandos podem ser usados:
+
+```bash
+# local
+$ make debug-build
+```
+ou
+
+```bash
+# local
+$ docker-compose up --build gateway-debug rabbitmq mongo
+```
 Escolha um dos ambientes para a execução
 
 ```bash
