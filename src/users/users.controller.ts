@@ -1,11 +1,10 @@
-import { Inject, Controller, Body, Post, Get } from '@nestjs/common';
+import { Inject, Controller, Body, Post, Get, Query } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 import { firstValueFrom, timeout } from 'rxjs';
 import { Auth } from '../commons/decorators/auth.decorator';
 import { IdResponseModel } from '../responseModels/id';
 import { CreateUserDto } from './dto/createUser.dto';
-import { UserEmailDto } from './dto/userEmail.dto';
 import { UserResponse } from './responses/user.response';
 
 @Controller('users')
@@ -47,12 +46,10 @@ export class UsersController {
   @Get('userByEmail')
   @Auth('RESEARCHER')
   public async getUserByEmail(
-    @Body() userEmailDto: UserEmailDto,
+    @Query('email') userEmai: string,
   ): Promise<UserResponse> {
     return firstValueFrom(
-      this.userServiceClient
-        .send('getUserData', userEmailDto.email)
-        .pipe(timeout(5000)),
+      this.userServiceClient.send('getUserData', userEmai).pipe(timeout(5000)),
     );
   }
 }
