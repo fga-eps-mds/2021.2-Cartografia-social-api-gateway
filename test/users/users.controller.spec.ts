@@ -123,9 +123,7 @@ describe('UsersController', () => {
 
     controller = module.get<UsersController>(UsersController);
 
-    const userData = await controller.getUserByEmail({
-      email: 'email@teste.com',
-    });
+    const userData = await controller.getUserByEmail('teste@email.com');
 
     expect(userData).toStrictEqual(userResponse);
     expect(userData).toBeInstanceOf(UserResponse);
