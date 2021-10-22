@@ -234,4 +234,14 @@ export class ComunidadeController {
         .pipe(timeout(TEN_SECONDS)),
     );
   }
+
+  @Get('exportCommunityToKml')
+  public async exportCommunityToKml(@Param('id') id: string): Promise<boolean> {
+    await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('exportCommunityToKml', id)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    return true;
+  }
 }

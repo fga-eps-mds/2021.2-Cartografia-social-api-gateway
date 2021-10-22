@@ -186,4 +186,24 @@ export class MapasController {
 
     return communityMapData;
   }
+
+  @Get('exportPointToKml')
+  public async exportPointToKml(@Param('id') id: string): Promise<boolean> {
+    await firstValueFrom(
+      this.mapaServiceClient
+        .send('exportPointToKml', id)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    return true;
+  }
+
+  @Get('exportAreaToKml')
+  public async exportAreaToKml(@Param('id') id: string): Promise<boolean> {
+    await firstValueFrom(
+      this.mapaServiceClient
+        .send('exportAreaToKml', id)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    return true;
+  }
 }
