@@ -8,6 +8,8 @@ import {
   Post,
   Put,
   Query,
+  StreamableFile,
+  Response,
 } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -24,6 +26,7 @@ import { CommunityUserDto } from './dto/communityUser.dto';
 import { TEN_SECONDS } from '../commons/constans';
 import { UserResponse } from 'src/users/responses/user.response';
 import { Auth } from '../commons/decorators/auth.decorator';
+import { Readable } from 'stream';
 
 @ApiTags('Comunidades')
 @Controller('community')
@@ -226,6 +229,26 @@ export class ComunidadeController {
     );
   }
 
+  @Get('exportCommunityToKml/:id')
+  public async exportCommunityToKml(
+    @Param('id') id: string,
+    @Response({ passthrough: true }) res,
+  ) {
+    const document = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('exportCommunityToKml', id)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    res.set({
+      'Content-Disposition': 'attachment; filename="comunidade.kml"',
+    });
+
+    const buff = Buffer.from(document, 'base64');
+    const stream = Readable.from(buff);
+    return new StreamableFile(stream);
+  }
+
   @Get(':id')
   public async getCommunity(@Param('id') id: string): Promise<Community> {
     return firstValueFrom<Community>(
@@ -233,15 +256,5 @@ export class ComunidadeController {
         .send('getCommunity', id)
         .pipe(timeout(TEN_SECONDS)),
     );
-  }
-
-  @Get('exportCommunityToKml')
-  public async exportCommunityToKml(@Param('id') id: string): Promise<boolean> {
-    await firstValueFrom(
-      this.comunidadeServiceClient
-        .send('exportCommunityToKml', id)
-        .pipe(timeout(TEN_SECONDS)),
-    );
-    return true;
   }
 }
