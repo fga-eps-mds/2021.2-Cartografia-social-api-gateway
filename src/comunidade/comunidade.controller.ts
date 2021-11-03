@@ -231,26 +231,6 @@ export class ComunidadeController {
     );
   }
 
-  @Get('exportCommunityToKml/:id')
-  public async exportCommunityToKml(
-    @Param('id') id: string,
-    @Response({ passthrough: true }) res,
-  ) {
-    const document = await firstValueFrom(
-      this.comunidadeServiceClient
-        .send('exportCommunityToKml', id)
-        .pipe(timeout(TEN_SECONDS)),
-    );
-
-    res.set({
-      'Content-Disposition': 'attachment; filename="comunidade.kml"',
-    });
-
-    const buff = Buffer.from(document, 'base64');
-    const stream = Readable.from(buff);
-    return new StreamableFile(stream);
-  }
-
   @Get(':id')
   public async getCommunity(@Param('id') id: string): Promise<Community> {
     return firstValueFrom<Community>(
@@ -258,5 +238,34 @@ export class ComunidadeController {
         .send('getCommunity', id)
         .pipe(timeout(TEN_SECONDS)),
     );
+  }
+
+  @Get('exportCommunityDataToKml/:communityId')
+  @Auth('RESEARCHER', 'ADMIN')
+  public async exportCommunityDataToKml(
+    @Param('communityId') communityId: string,
+    @Response({ passthrough: true }) res,
+  ) {
+    const community = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunity', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    const document = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('exportCommunityDataToKml', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    const communityFileName = `${community.name}.kml`;
+
+    res.set({
+      'Content-Disposition': 'attachment; filename=' + communityFileName,
+    });
+
+    const buff = Buffer.from(document, 'utf-8');
+    const stream = Readable.from(buff);
+    return new StreamableFile(stream);
   }
 }
