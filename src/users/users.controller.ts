@@ -44,7 +44,7 @@ export class UsersController {
   }
 
   @Get('userByEmail')
-  @Auth('RESEARCHER')
+  @Auth('RESEARCHER', 'COMMUNITY_MEMBER')
   public async getUserByEmail(
     @Query('email') userEmai: string,
   ): Promise<UserResponse> {
