@@ -269,4 +269,34 @@ export class ComunidadeController {
     const stream = Readable.from(buff);
     return new StreamableFile(stream);
   }
+
+  @Get('exportCommunityPointsToKml/:communityId')
+  @Auth('RESEARCHER', 'ADMIN')
+  public async exportCommunityPointsToKml(
+    @Param('communityId') communityId: string,
+    @Response({ passthrough: true }) res,
+  ) {
+    const community = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunity', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    const document = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('exportCommunityPointsToKml', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    let communityFileName = `${community.name}.points.kml`;
+    communityFileName = communityFileName.replace(/\s/g, '_');
+
+    res.set({
+      'Content-Disposition': 'attachment; filename=' + communityFileName,
+    });
+
+    const buff = Buffer.from(document, 'utf-8');
+    const stream = Readable.from(buff);
+    return new StreamableFile(stream);
+  }
 }
