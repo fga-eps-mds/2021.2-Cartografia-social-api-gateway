@@ -156,11 +156,12 @@ export class ComunidadeController {
 
   @Get('getCommunityAdminUser')
   public async getCommunityAdminUser(
-    @Body() communityAdminUser: CommunityUserDto,
+    @Query('communityId') communityId: string,
+    @Query('userId') userId: string,
   ): Promise<UserRelation> {
     return firstValueFrom(
       this.comunidadeServiceClient
-        .send('getCommunityAdminUser', communityAdminUser)
+        .send('getCommunityAdminUser', { userId, communityId })
         .pipe(timeout(TEN_SECONDS)),
     );
   }
