@@ -94,11 +94,12 @@ export class ComunidadeController {
 
   @Get('getCommunityUser')
   public async getCommunityUser(
-    @Body() communityUser: CommunityUserDto,
+    @Query('communityId') communityId: string,
+    @Query('userId') userId: string,
   ): Promise<UserRelation> {
     return firstValueFrom(
       this.comunidadeServiceClient
-        .send('getCommunityUser', communityUser)
+        .send('getCommunityUser', { userId, communityId })
         .pipe(timeout(TEN_SECONDS)),
     );
   }
