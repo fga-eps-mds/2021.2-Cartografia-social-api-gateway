@@ -240,9 +240,9 @@ export class ComunidadeController {
     );
   }
 
-  @Get('exportCommunityDataToKml/:communityId')
-  @Auth('RESEARCHER', 'ADMIN')
-  public async exportCommunityDataToKml(
+  @Get('exportCommunityAreaToKml/:communityId')
+  // @Auth('RESEARCHER', 'ADMIN')
+  public async exportCommunityAreaToKml(
     @Param('communityId') communityId: string,
     @Response({ passthrough: true }) res,
   ) {
@@ -254,11 +254,12 @@ export class ComunidadeController {
 
     const document = await firstValueFrom(
       this.comunidadeServiceClient
-        .send('exportCommunityDataToKml', communityId)
+        .send('exportCommunityAreaToKml', communityId)
         .pipe(timeout(TEN_SECONDS)),
     );
 
-    const communityFileName = `${community.name}.kml`;
+    let communityFileName = `${community.name}.area.kml`;
+    communityFileName = communityFileName.replace(/\s/g, '_');
 
     res.set({
       'Content-Disposition': 'attachment; filename=' + communityFileName,
