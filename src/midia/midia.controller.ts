@@ -1,4 +1,5 @@
 import {
+  Query,
   Body,
   Controller,
   Delete,
@@ -26,7 +27,7 @@ export class MidiaController {
   }
 
   @Post('getUrl')
-  public async getMidiaUrl(@Body('id') id: string): Promise<string> {
+  public async getMidiaUrl(@Query('id') id: string): Promise<string> {
     const midiaUrl: string = await firstValueFrom(
       this.midiaServiceClient.send('getUrl', id).pipe(timeout(TEN_SECONDS)),
     );
