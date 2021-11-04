@@ -313,43 +313,12 @@ describe('ComunidadeController', () => {
   it('should get a user from a community', async () => {
     const id = '1';
 
-    const userRelationToFind: any = {
-      userId: '1234',
-      communityId: '4321',
-    };
+    const userId = '1234';
+    const communityId = '4321';
 
     const result: any = new UserRelation();
-    result.communityId = userRelationToFind.communityId;
-    result.userId = userRelationToFind.userId;
-    result.id = id;
-
-    const module = await customModule(
-      jest.fn(
-        () =>
-          new Observable((sub) => {
-            sub.next(result);
-          }),
-      ),
-    );
-
-    controller = module.get<ComunidadeController>(ComunidadeController);
-
-    expect(await controller.getCommunityUser(userRelationToFind)).toStrictEqual(
-      result,
-    );
-  });
-
-  it('should get a admin user from a community', async () => {
-    const id = '1';
-
-    const userRelationToFind: any = {
-      userId: '1234',
-      communityId: '4321',
-    };
-
-    const result: any = new UserRelation();
-    result.communityId = userRelationToFind.communityId;
-    result.userId = userRelationToFind.userId;
+    result.communityId = communityId;
+    result.userId = userId;
     result.id = id;
 
     const module = await customModule(
@@ -364,7 +333,34 @@ describe('ComunidadeController', () => {
     controller = module.get<ComunidadeController>(ComunidadeController);
 
     expect(
-      await controller.getCommunityAdminUser(userRelationToFind),
+      await controller.getCommunityUser(communityId, userId),
+    ).toStrictEqual(result);
+  });
+
+  it('should get a admin user from a community', async () => {
+    const id = '1';
+
+    const userId = '1234';
+    const communityId = '4321';
+
+    const result: any = new UserRelation();
+    result.communityId = communityId;
+    result.userId = userId;
+    result.id = id;
+
+    const module = await customModule(
+      jest.fn(
+        () =>
+          new Observable((sub) => {
+            sub.next(result);
+          }),
+      ),
+    );
+
+    controller = module.get<ComunidadeController>(ComunidadeController);
+
+    expect(
+      await controller.getCommunityAdminUser(communityId, userId),
     ).toStrictEqual(result);
   });
 

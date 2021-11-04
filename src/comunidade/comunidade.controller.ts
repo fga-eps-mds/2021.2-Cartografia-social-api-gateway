@@ -8,6 +8,8 @@ import {
   Post,
   Put,
   Query,
+  StreamableFile,
+  Response,
 } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -24,6 +26,7 @@ import { CommunityUserDto } from './dto/communityUser.dto';
 import { TEN_SECONDS } from '../commons/constans';
 import { UserResponse } from 'src/users/responses/user.response';
 import { Auth } from '../commons/decorators/auth.decorator';
+import { Readable } from 'stream';
 
 @ApiTags('Comunidades')
 @Controller('community')
@@ -91,11 +94,23 @@ export class ComunidadeController {
 
   @Get('getCommunityUser')
   public async getCommunityUser(
-    @Query() communityUser: CommunityUserDto,
+    @Query('communityId') communityId: string,
+    @Query('userId') userId: string,
   ): Promise<UserRelation> {
     return firstValueFrom(
       this.comunidadeServiceClient
-        .send('getCommunityUser', communityUser)
+        .send('getCommunityUser', { userId, communityId })
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
+  @Get('getUserCommunity')
+  public async getUserCommunity(
+    @Query('userEmail') userEmail: string,
+  ): Promise<UserRelation> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getUserCommunity', userEmail)
         .pipe(timeout(TEN_SECONDS)),
     );
   }
@@ -152,11 +167,12 @@ export class ComunidadeController {
 
   @Get('getCommunityAdminUser')
   public async getCommunityAdminUser(
-    @Body() communityAdminUser: CommunityUserDto,
+    @Query('communityId') communityId: string,
+    @Query('userId') userId: string,
   ): Promise<UserRelation> {
     return firstValueFrom(
       this.comunidadeServiceClient
-        .send('getCommunityAdminUser', communityAdminUser)
+        .send('getCommunityAdminUser', { userId, communityId })
         .pipe(timeout(TEN_SECONDS)),
     );
   }
@@ -233,5 +249,65 @@ export class ComunidadeController {
         .send('getCommunity', id)
         .pipe(timeout(TEN_SECONDS)),
     );
+  }
+
+  @Get('exportCommunityAreaToKml/:communityId')
+  // @Auth('RESEARCHER', 'ADMIN')
+  public async exportCommunityAreaToKml(
+    @Param('communityId') communityId: string,
+    @Response({ passthrough: true }) res,
+  ) {
+    const community = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunity', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    const document = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('exportCommunityAreaToKml', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    let communityFileName = `${community.name}.area.kml`;
+    communityFileName = communityFileName.replace(/\s/g, '_');
+
+    res.set({
+      'Content-Disposition': 'attachment; filename=' + communityFileName,
+    });
+
+    const buff = Buffer.from(document, 'utf-8');
+    const stream = Readable.from(buff);
+    return new StreamableFile(stream);
+  }
+
+  @Get('exportCommunityPointsToKml/:communityId')
+  @Auth('RESEARCHER', 'ADMIN')
+  public async exportCommunityPointsToKml(
+    @Param('communityId') communityId: string,
+    @Response({ passthrough: true }) res,
+  ) {
+    const community = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getCommunity', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    const document = await firstValueFrom(
+      this.comunidadeServiceClient
+        .send('exportCommunityPointsToKml', communityId)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+
+    let communityFileName = `${community.name}.points.kml`;
+    communityFileName = communityFileName.replace(/\s/g, '_');
+
+    res.set({
+      'Content-Disposition': 'attachment; filename=' + communityFileName,
+    });
+
+    const buff = Buffer.from(document, 'utf-8');
+    const stream = Readable.from(buff);
+    return new StreamableFile(stream);
   }
 }
