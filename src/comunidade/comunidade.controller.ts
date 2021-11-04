@@ -104,6 +104,17 @@ export class ComunidadeController {
     );
   }
 
+  @Get('getUserCommunity')
+  public async getUserCommunity(
+    @Query('userEmail') userEmail: string,
+  ): Promise<UserRelation> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('getUserCommunity', userEmail)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
+
   @Delete('removeUser')
   @HttpCode(204)
   public async removeUser(
