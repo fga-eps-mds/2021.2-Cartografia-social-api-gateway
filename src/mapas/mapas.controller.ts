@@ -1,4 +1,5 @@
 import {
+  Query,
   Body,
   Controller,
   Delete,
@@ -51,7 +52,7 @@ export class MapasController {
   }
 
   @Get('point')
-  public async getPoint(@Body('id') id: string): Promise<PointDto> {
+  public async getPoint(@Query('id') id: string): Promise<PointDto> {
     const mapaResponse = await firstValueFrom<PointDto>(
       this.mapaServiceClient.send('getPoint', id),
     );
