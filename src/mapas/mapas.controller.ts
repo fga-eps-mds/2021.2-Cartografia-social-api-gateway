@@ -26,6 +26,7 @@ import { MediaRelationDto } from './dto/media-relation.dto';
 import { PointDto } from './dto/point.dto';
 import { UpdateAreaDto } from './dto/update-area.dto';
 import { UpdatePointDto } from './dto/update-point.dto';
+import { MediaRelationWithUrlDto } from './dto/media-relation-with-url.dto';
 
 @ApiTags('maps')
 @Controller('maps')
@@ -34,6 +35,7 @@ export class MapasController {
     @Inject('MAPA_SERVICE') private readonly mapaServiceClient: ClientProxy,
     @Inject('COMUNIDADE_SERVICE')
     private readonly comunidadeServiceClient: ClientProxy,
+    @Inject('MIDIA_SERVICE') private readonly midiaServiceClient: ClientProxy,
   ) {}
 
   async onApplicationBootstrap() {
@@ -206,5 +208,31 @@ export class MapasController {
         .pipe(timeout(TEN_SECONDS)),
     );
     return true;
+  }
+
+  @Get('midiaFromPoint/:pointId')
+  public async getMidiaFromPoint(
+    @Param('pointId') pointId: string,
+  ): Promise<MediaRelationWithUrlDto[]> {
+    const midiasByPoint = await firstValueFrom<MediaRelationWithUrlDto[]>(
+      this.mapaServiceClient.send('getMidiaFromPoint', pointId),
+    );
+
+    const response: MediaRelationWithUrlDto[] = [];
+
+    for (const value of midiasByPoint) {
+      const mediaUrl = await firstValueFrom(
+        this.midiaServiceClient
+          .send('getUrl', value.mediaId)
+          .pipe(timeout(TEN_SECONDS)),
+      );
+
+      response.push({
+        ...value,
+        url: mediaUrl.secure_url,
+      });
+    }
+
+    return response;
   }
 }
