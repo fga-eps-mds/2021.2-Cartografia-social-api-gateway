@@ -91,7 +91,7 @@ export class ComunidadeController {
 
   @Get('getCommunityUser')
   public async getCommunityUser(
-    @Body() communityUser: CommunityUserDto,
+    @Query() communityUser: CommunityUserDto,
   ): Promise<UserRelation> {
     return firstValueFrom(
       this.comunidadeServiceClient
