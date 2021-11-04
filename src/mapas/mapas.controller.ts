@@ -147,6 +147,30 @@ export class MapasController {
     return true;
   }
 
+  @Post('addMediaToArea')
+  public async addMediaToArea(
+    @Body() mediaRelationDto: MediaRelationDto,
+  ): Promise<boolean> {
+    await firstValueFrom<MediaRelationDto>(
+      this.mapaServiceClient
+        .send('addMediaToArea', mediaRelationDto)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    return true;
+  }
+
+  @Delete('removeMediaFromArea')
+  public async removeMediaFromArea(
+    @Body() mediaRelationDto: MediaRelationDto,
+  ): Promise<boolean> {
+    await firstValueFrom<MediaRelationDto>(
+      this.mapaServiceClient
+        .send('removeMediaFromArea', mediaRelationDto)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+    return true;
+  }
+
   @Post('addToCommunity')
   @Auth('RESEARCHER', 'COMMUNITY_MEMBER', 'ADMIN')
   public async addToCommunity(
