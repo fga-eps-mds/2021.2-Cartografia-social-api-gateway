@@ -38,14 +38,20 @@ describe('MapasController', () => {
           },
         },
         {
-          provide: FirebaseAuth,
-          useClass: FirebaseAuth,
-        },
-        {
           provide: 'COMUNIDADE_SERVICE',
           useValue: {
             send: communityFn,
           },
+        },
+        {
+          provide: 'MIDIA_SERVICE',
+          useValue: {
+            send: fn,
+          },
+        },
+        {
+          provide: FirebaseAuth,
+          useClass: FirebaseAuth,
         },
         {
           provide: 'CONFIG',
@@ -86,6 +92,12 @@ describe('MapasController', () => {
         },
         {
           provide: 'COMUNIDADE_SERVICE',
+          useValue: {
+            send: jest.fn(),
+          },
+        },
+        {
+          provide: 'MIDIA_SERVICE',
           useValue: {
             send: jest.fn(),
           },
