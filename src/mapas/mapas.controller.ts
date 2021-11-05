@@ -73,8 +73,8 @@ export class MapasController {
     return mapaResponse;
   }
 
-  @Delete('point')
-  public async deletePoint(@Query('id') id: string): Promise<boolean> {
+  @Delete('point/:id')
+  public async deletePoint(@Param('id') id: string): Promise<boolean> {
     await firstValueFrom<boolean>(
       this.mapaServiceClient.send('deletePoint', id),
     );
