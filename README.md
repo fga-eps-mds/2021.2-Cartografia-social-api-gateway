@@ -41,6 +41,7 @@ $ git clone https://github.com/fga-eps-mds/2021.1-Cartografia-social-api-gateway
 ```bash
 $ cd 2021.1-Cartografia-social-api-gateway
 $ npm install
+#caso dê erro de permissão, tente executar com o comando sudo npm install
 ```
 Crie um projeto no [firebase](https://firebase.google.com/docs/android/setup?hl=pt) e crie um arquivo '.firebase.env.' no diretório raiz. Se baseie no arquivo '.firebase.env.example' para o preenchimento das configurações.
 
@@ -57,6 +58,10 @@ ou
 ```bash
 # local
 $ docker-compose up --build gateway-debug rabbitmq mongo
+```
+Caso a execução falhe por causa que o serviço do rabbitmq ja esteja em execução, pode ser usado o seguinte comando para parar o processo e depois executar o comando anterior novamente:
+```bash
+$ sudo -u rabbitmq rabbitmqctl stop
 ```
 Escolha um dos ambientes para a execução
 
