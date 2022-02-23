@@ -6,6 +6,7 @@ services:
     command: npm run start:debug
     volumes: 
       - .:/var/www/gateway
+      - /var/www/gateway/node_modules
     env_file:
       - .env
     ports:
@@ -21,6 +22,7 @@ services:
     hostname: gateway
     volumes: 
       - .:/var/www/gateway
+      - /var/www/gateway/node_modules
     env_file:
       - .env
     command: npm run start:dev
@@ -36,6 +38,7 @@ services:
     hostname: gateway
     volumes: 
       - .:/var/www/gateway
+      - /var/www/gateway/node_modules
     command: npm run start:prod
     env_file:
       - .env
