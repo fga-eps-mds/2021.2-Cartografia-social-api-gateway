@@ -48,7 +48,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          cd projects/2021.1-Cartografia-social-api-gateway
+          cd projects/2021.2-Cartografia-social-api-gateway
           docker-compose down
           git checkout develop
           git pull origin develop -f
