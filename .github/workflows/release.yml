@@ -16,7 +16,7 @@ jobs:
       - name: Copy repository
         uses: actions/checkout@v2
       - run: mkdir -p /tmp/sonar/
-      - run: curl --location --request POST  $METRICS_URL > /tmp/sonar/${{ steps.name.outputs.file_name }}.json
+      - run: curl -4 --location --request POST  $METRICS_URL > /tmp/sonar/${{ steps.name.outputs.file_name }}.json
         env:
           METRICS_URL: ${{ secrets.METRICS_URL }}
       - uses: actions/upload-artifact@v2
