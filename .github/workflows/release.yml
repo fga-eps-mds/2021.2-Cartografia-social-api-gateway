@@ -30,7 +30,10 @@ jobs:
           prerelease: true
           files: |
             /tmp/sonar/${{ steps.name.outputs.file_name }}.json
-
+            
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        
       - name: Send metrics to docs repo
         uses: dmnemec/copy_file_to_another_repo_action@v1.1.1
         env:
@@ -42,3 +45,5 @@ jobs:
           user_email: ${{ secrets.GIT_EMAIL}}
           user_name: ${{ secrets.GIT_USER }}
           commit_message: New metrics from ${{ github.event.repository.name }}
+
+
