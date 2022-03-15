@@ -15,21 +15,20 @@ jobs:
 
       - name: Copy repository
         uses: actions/checkout@v2
-      - run: mkdir -p /tmp/sonar/
-      - run: wget $METRICS_URL -O /tmp/sonar/${{ steps.name.outputs.file_name }}.json
+      - run: wget $METRICS_URL -O ${{ steps.name.outputs.file_name }}.json
         env:
           METRICS_URL: ${{ secrets.METRICS_URL }}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.name.outputs.file_name }}.json
-          path: /tmp/sonar/${{ steps.name.outputs.file_name }}.json
+          path: ${{ steps.name.outputs.file_name }}.json
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
           files: |
-            /tmp/sonar/${{ steps.name.outputs.file_name }}.json
+            ${{ steps.name.outputs.file_name }}.json
             
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
@@ -39,7 +38,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.GIT_TOKEN }}
         with:
-          source_file: /tmp/sonar/${{ steps.name.outputs.file_name }}.json
+          source_file: ${{ steps.name.outputs.file_name }}.json
           destination_repo: 'fga-eps-mds/2021-2-Cartografia-social-Doc'
           destination_folder: 'analytics-raw-data/2021-2-Cartografia-social-api-gateway'
           user_email: ${{ secrets.GIT_EMAIL}}
