@@ -52,11 +52,14 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
+    restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - backend
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq/
 
   mongo:
     container_name: mongo
@@ -66,8 +69,8 @@ services:
     ports:
       - 27017:27017
     networks:
-      - backend
-      
+      - backend 
+    
 networks:
   backend:
     name: cartografia-network
@@ -75,3 +78,4 @@ networks:
   
 volumes: 
   mongo_data:
+  rabbit_data:
