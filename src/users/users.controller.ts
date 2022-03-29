@@ -6,6 +6,7 @@ import { Auth } from '../commons/decorators/auth.decorator';
 import { IdResponseModel } from '../responseModels/id';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserResponse } from './responses/user.response';
+import { CreateNonValidatedUserDto } from './dto/create-non-validated-user.dto';
 
 @Controller('users')
 @ApiTags('Users')
@@ -26,6 +27,18 @@ export class UsersController {
     return firstValueFrom(
       this.userServiceClient
         .send('createResearcher', createResearcherDto)
+        .pipe(timeout(15000)),
+    );
+  }
+
+  @Post('createUser')
+  @ApiConflictResponse()
+  public async createUser(
+    @Body() createNonValidatedUserDto: CreateNonValidatedUserDto,
+  ): Promise<IdResponseModel> {
+    return firstValueFrom(
+      this.userServiceClient
+        .send('createNonValidatedUserDto', createNonValidatedUserDto)
         .pipe(timeout(15000)),
     );
   }
