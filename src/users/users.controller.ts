@@ -38,7 +38,7 @@ export class UsersController {
   ): Promise<IdResponseModel> {
     return firstValueFrom(
       this.userServiceClient
-        .send('createNonValidatedUserDto', createNonValidatedUserDto)
+        .send('createUser', createNonValidatedUserDto)
         .pipe(timeout(15000)),
     );
   }
