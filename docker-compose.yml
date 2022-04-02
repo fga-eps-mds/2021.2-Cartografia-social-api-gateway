@@ -59,13 +59,13 @@ services:
     networks:
       - backend
     volumes:
-      - rabbit_data:/var/lib/rabbitmq/
+      - ./rabbit_data:/var/lib/rabbitmq/
 
   mongo:
     container_name: mongo
     image: mongo
     volumes:
-      - mongo_data:/data/db
+      - ./data/db:/data/db
     ports:
       - 27017:27017
     networks:
@@ -75,7 +75,3 @@ networks:
   backend:
     name: cartografia-network
     driver: bridge
-  
-volumes: 
-  mongo_data:
-  rabbit_data:
