@@ -4,6 +4,7 @@ export class CreateNonValidatedUserDto {
     cellPhone: string;
     password?: string;
     role: string;
+    position: string;
     affiliation: string;
     community: string;
 }
