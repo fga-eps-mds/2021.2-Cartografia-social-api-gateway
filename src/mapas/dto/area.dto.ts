@@ -7,4 +7,5 @@ export class AreaDto {
   type = 'Polygon';
   coordinates: number[][][];
   medias: MediaRelationDto[];
+  validated: boolean;
 }

@@ -4,7 +4,8 @@ import { ArrayMinSize, IsArray, ValidateNested } from 'class-validator';
 export class CreateAreaDto {
   title: string;
   description?: string;
-
+  validated: boolean;
+  
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(3, {
