@@ -8,4 +8,5 @@ export class PointDto {
   coordinates: number[];
   medias: MediaRelationDto[];
   validated: boolean;
+  member: string;
 }

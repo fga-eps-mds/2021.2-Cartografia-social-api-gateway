@@ -5,6 +5,7 @@ export class CreateAreaDto {
   title: string;
   description?: string;
   validated: boolean;
+  member: string;
   
   @IsArray()
   @ValidateNested({ each: true })
