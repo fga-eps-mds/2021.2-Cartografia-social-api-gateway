@@ -130,6 +130,8 @@ describe('MapasController', () => {
         description: 'teste',
         latitude: 0,
         longitude: 0,
+        validated: false,
+        member: 'memberId'
       }),
     ).toBe(id);
   });
@@ -166,6 +168,8 @@ describe('MapasController', () => {
         id: id,
         title: 'setor leste',
         description: 'setor leste',
+        validated: false,
+        member: 'memberId'
       }),
     ).toStrictEqual(id);
   });
@@ -198,6 +202,8 @@ describe('MapasController', () => {
           { latitude: 1, longitude: 1 },
           { latitude: 2, longitude: 2 },
         ],
+        validated: false,
+        member: 'memberId'
       }),
     ).toBe(id);
   });
@@ -241,6 +247,8 @@ describe('MapasController', () => {
         id: id,
         title: 'teste',
         description: 'teste',
+        validated: false,
+        member: 'memberId'
       }),
     ).toStrictEqual(id);
   });
