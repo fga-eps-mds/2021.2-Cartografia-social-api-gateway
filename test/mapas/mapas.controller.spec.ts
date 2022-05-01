@@ -131,7 +131,6 @@ describe('MapasController', () => {
         latitude: 0,
         longitude: 0,
         validated: false,
-        color: 'yellow',
         member: 'memberId'
       }),
     ).toBe(id);
@@ -170,7 +169,6 @@ describe('MapasController', () => {
         title: 'setor leste',
         description: 'setor leste',
         validated: false,
-        color: 'yellow',
         member: 'memberId'
       }),
     ).toStrictEqual(id);
@@ -205,7 +203,6 @@ describe('MapasController', () => {
           { latitude: 2, longitude: 2 },
         ],
         validated: false,
-        color: 'yellow',
         member: 'memberId'
       }),
     ).toBe(id);
@@ -251,7 +248,6 @@ describe('MapasController', () => {
         title: 'teste',
         description: 'teste',
         validated: false,
-        color: 'yellow',
         member: 'memberId'
       }),
     ).toStrictEqual(id);

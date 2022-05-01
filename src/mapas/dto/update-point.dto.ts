@@ -3,6 +3,5 @@ export class UpdatePointDto {
   title?: string;
   description?: string;
   validated: boolean;
-  color: string;
   member: string;
 }

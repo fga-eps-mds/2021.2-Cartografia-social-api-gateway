@@ -8,6 +8,5 @@ export class AreaDto {
   coordinates: number[][][];
   medias: MediaRelationDto[];
   validated: boolean;
-  color: string;
   member: string;
 }

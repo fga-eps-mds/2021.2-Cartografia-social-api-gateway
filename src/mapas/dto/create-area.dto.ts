@@ -5,7 +5,6 @@ export class CreateAreaDto {
   title: string;
   description?: string;
   validated: boolean;
-  color: string;
   member: string;
   
   @IsArray()
