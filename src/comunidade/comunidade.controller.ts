@@ -311,10 +311,8 @@ export class ComunidadeController {
     return new StreamableFile(stream);
   }
 
-  @Post('exportCommunityKML')
-  public async exportCommunityKML(
-    @Body() userEmail: string
-  ): Promise<string> {
+  @Get('exportCommunityKML/:userEmail')
+  public async exportCommunityKML(@Param('userEmail') userEmail: string) {
     return firstValueFrom(
       this.comunidadeServiceClient
         .send('exportCommunityKML', userEmail)
