@@ -310,4 +310,15 @@ export class ComunidadeController {
     const stream = Readable.from(buff);
     return new StreamableFile(stream);
   }
+
+  @Post('exportCommunityKML')
+  public async exportCommunityKML(
+    @Body() userEmail: string
+  ): Promise<string> {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('exportCommunityKML', userEmail)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
 }
