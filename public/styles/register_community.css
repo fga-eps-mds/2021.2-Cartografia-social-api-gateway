@@ -1,0 +1,51 @@
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+  }
+}
+
+.content {
+  max-width: 90%;
+  margin: auto;
+}
+
+.form {
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.form__input {
+  margin: auto;
+  display: block;
+  width: 100%;
+  padding: 20px;
+  font-family: "Open Sans", sans-serif;
+  -webkit-appearance: none;
+  border: 0;
+  outline: 0;
+  transition: 0.3s;
+
+
+}
+
+.form__input:focus {
+  background: darken(#fff, 3%);
+}
+
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  font-family: "Open Sans", sans-serif;
+  outline: 0;
+  border: 0;
+  color: white;
+  background: #4caf50;
+  transition-duration: 0.4s;
+}
+
+.btn:hover {
+  background: #228B22;
+  cursor: pointer;
+}

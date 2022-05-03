@@ -1,0 +1,35 @@
+<%- include('header'); -%>
+  <div class="content">
+      <form class="form" id="register_community">
+        <div class="form__group">
+          <input type="text" name="name" placeholder="Nome da comunidade" class="form__input" />
+        </div>
+
+        <div class="form__group">
+          <input type="text" name="county" placeholder="Município" class="form__input" />
+        </div>
+
+        <div class="form__group">
+          <input type="text" name="state" placeholder="Estado" class="form__input" />
+        </div>
+        <div class="form__group">
+          <input type="text" name="association" placeholder="Nome da associação representante (opcional)" class="form__input" />
+        </div>
+        <div class="form__group">
+          <input type="text" name="affiliation" placeholder="Nome do grupo de pesquisa (opcional)" class="form__input" />
+        </div>
+        <div class="form__group">
+          <input type="text" name="institution" placeholder="Instituição de ensino/pesquisa vinculado (opcional)" class="form__input" />
+        </div>
+        <div class="form__group">
+          <input type="text" name="user_email" placeholder="Email" class="form__input" />
+        </div>
+
+        <input class="btn" type="submit" value="Cadastrar comunidade">
+      </form>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../scripts/register_community.js"></script>
+  <link href="../styles/register_community.css" rel="stylesheet">
+</body>
+</html>
