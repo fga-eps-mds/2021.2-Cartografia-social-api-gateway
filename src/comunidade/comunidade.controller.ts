@@ -10,6 +10,7 @@ import {
   Query,
   StreamableFile,
   Response,
+  Render,
 } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -34,10 +35,17 @@ export class ComunidadeController {
   constructor(
     @Inject('COMUNIDADE_SERVICE')
     private readonly comunidadeServiceClient: ClientProxy,
+    @Inject('USER_SERVICE') private readonly userServiceClient: ClientProxy,
   ) {}
 
   async onApplicationBootstrap() {
     await this.comunidadeServiceClient.connect();
+  }
+
+  @Get('/cadastrarComunidade')
+  @Render('register_community')
+  public async cadastrarComunidade() {
+    return;
   }
 
   @Post('sendAnswers')
@@ -178,7 +186,6 @@ export class ComunidadeController {
   }
 
   @Post()
-  @Auth('RESEARCHER')
   public async createCommunity(
     @Body() createCommunityDto: CreateCommunityDto,
   ): Promise<IdResponseModel> {

@@ -8,8 +8,17 @@ export class Community {
   name: string;
 
   @ApiProperty()
-  description: string;
+  affiliation?: string;
 
   @ApiProperty()
-  imageUrl?: string;
+  association?: string;
+
+  @ApiProperty()
+  county?: string;
+
+  @ApiProperty()
+  state?: string;
+
+  @ApiProperty()
+  institution?: string;
 }
