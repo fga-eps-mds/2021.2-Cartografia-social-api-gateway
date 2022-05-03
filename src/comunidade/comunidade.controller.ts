@@ -326,4 +326,12 @@ export class ComunidadeController {
         .pipe(timeout(TEN_SECONDS)),
     );
   }
+  @Get('sendCreationEmail/:userEmail')
+  public async sendCreationEmail(@Param('userEmail') userEmail: string) {
+    return firstValueFrom(
+      this.comunidadeServiceClient
+        .send('sendCreationEmail', userEmail)
+        .pipe(timeout(TEN_SECONDS)),
+    );
+  }
 }
