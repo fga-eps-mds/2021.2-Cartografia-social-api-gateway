@@ -1,0 +1,109 @@
+table {
+  border: 1px solid #eee;
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+  align-items: center;
+  font-family: "Open Sans", sans-serif;
+  margin-top: 50px;
+}
+
+table thead th {
+  padding: 10px;
+  font-size: 1em;
+  color: #000;
+  font-weight: 600;
+}
+
+table tbody tr td {
+  display: table-cell;
+  font-weight: 400;
+  padding: 10px;
+  text-align: left;
+  position: relative;
+}
+
+table tbody tr {
+  border: none;
+  display: table-row;
+}
+
+table tbody tr:nth-child(odd) {
+  background: #f2f2f2;
+}
+
+table tbody tr td button {
+  display: inline-block;
+  padding: 10px 15px;
+  position: initial;
+  transform: translate(0);
+  width: auto;
+}
+
+button::first-letter {
+  text-transform: capitalize;
+}
+
+table tbody tr td button {
+  background: #4caf50;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(34, 34, 34, 0.2);
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 10px;
+  width: 100%;
+}
+
+.recusar {
+  background: red;
+}
+
+table thead {
+  display: table-header-group;
+  font-weight: 500;
+}
+
+table tbody tr td:before {
+  display: none;
+}
+
+table tbody tr td button:hover,
+table tbody tr td button:focus {
+  background: #228B22;
+  cursor: pointer;
+}
+
+@media all and (max-width: 800px) {
+  table tbody tr td {
+    display: block;
+    text-align: right;
+  }
+
+  table tbody tr td p {
+    display: block;
+    overflow: hidden;
+  }
+
+  table tbody tr td:before {
+    content: attr(data-title);
+    display: block;
+    font-weight: 600;
+    font-size: 1em;
+    float: left;
+  }
+
+  table {
+    border: none;
+  }
+
+  table thead {
+    display: none;
+  }
+
+  table tbody tr {
+    margin-bottom: 10px;
+    display: block;
+    border: 1px solid #dad6eb;
+  }
+}

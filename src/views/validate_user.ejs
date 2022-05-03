@@ -1,0 +1,68 @@
+<%- include('header'); -%>
+  <main>
+    <div class="titulo-secundario">
+      <h2>Análise de Solicitação de Cadastros</h2>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Celular</th>
+          <th>Perfil</th>
+          <th>Afiliação/Comunidade</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach((user)=> { %>
+          <tr>
+            <td data-title="Nome">
+              <%= user.name %>
+            </td>
+            <td data-title="Email" , id="email">
+              <%= user.email %>
+            </td>
+            <td data-title="Celular">
+              <%= user.cellPhone %>
+            </td>
+            <%if (user.type==0 ) { %>
+
+              <td data-title="Perfil">
+                Pesquisador
+              </td>
+
+              <td data-title="Afiliacao">
+                <%= user.affiliation %>
+              </td>
+
+            <% } else if (user.type==1 ) { %>
+                <td data-title="Perfil">
+                  Membro de comunidade
+                </td>
+
+                <td data-title="Comunidade">
+                  <p>
+                    <%= user.community %> <b>Função: <b><%= user.role %>
+                  </p>
+                </td>
+              <% } %>
+
+              <% ['aceitar', 'recusar' ].forEach((text)=> { %>
+                <td>
+                  <button type="submit" data-email="<%= user.email %>" class="<%= text %>">
+                    <%= text %>
+                  </button>
+                </td>
+              <% }) %>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../scripts/validate_user.js"></script>
+  <link href="../styles/validate_user.css" rel="stylesheet">
+</body>
+</html>
