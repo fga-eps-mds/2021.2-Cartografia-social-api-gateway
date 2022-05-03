@@ -13,4 +13,8 @@ export class CreateUserDto {
   cellPhone: string;
 
   password?: string;
+  role?: string;
+  affiliation?: string;
+  community?: string;
+  type: string;
 }
