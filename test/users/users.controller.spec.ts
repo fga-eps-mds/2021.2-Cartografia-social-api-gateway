@@ -82,6 +82,7 @@ describe('UsersController', () => {
         name: 'Example',
         cellPhone: '61992989898',
         password: password,
+        type: 'COMMUNITY_MEMBER',
       }),
     ).toBe(id);
   });
@@ -102,6 +103,7 @@ describe('UsersController', () => {
         name: 'Example',
         cellPhone: '61992989898',
         password: password,
+        type: 'COMMUNITY_MEMBER',
       }),
     ).toBe(id);
   });

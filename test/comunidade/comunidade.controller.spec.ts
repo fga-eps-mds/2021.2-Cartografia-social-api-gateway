@@ -25,6 +25,12 @@ describe('ComunidadeController', () => {
           },
         },
         {
+          provide: 'USER_SERVICE',
+          useValue: {
+            send: fn,
+          },
+        },
+        {
           provide: FirebaseAuth,
           useClass: FirebaseAuth,
         },
@@ -143,7 +149,6 @@ describe('ComunidadeController', () => {
     expect(
       await controller.createCommunity({
         name: 'Por do sol',
-        description: 'Comunidade pôr do sol',
       }),
     ).toStrictEqual({
       id,
@@ -163,7 +168,6 @@ describe('ComunidadeController', () => {
       await controller.updateCommunity({
         id: '123',
         name: 'Por do sol',
-        description: 'Comunidade pôr do sol',
       }),
     ).toStrictEqual({
       id,
@@ -187,7 +191,6 @@ describe('ComunidadeController', () => {
 
     community.id = '123';
     community.name = 'Por do sol';
-    community.description = 'Comunidade pôr do sol';
 
     const module = await customModule(
       jest.fn(() => new Observable((sub) => sub.next(community))),
@@ -257,8 +260,6 @@ describe('ComunidadeController', () => {
 
     community.id = '123';
     community.name = 'Por do sol';
-    community.description = 'Comunidade pôr do sol';
-    community.imageUrl = null;
 
     const userRelation = [
       {
@@ -286,8 +287,6 @@ describe('ComunidadeController', () => {
 
     community.id = '123';
     community.name = 'Por do sol';
-    community.description = 'Comunidade pôr do sol';
-    community.imageUrl = null;
 
     const userRelation = [
       {
