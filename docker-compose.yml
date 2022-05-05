@@ -6,6 +6,7 @@ services:
     command: npm run start:debug
     volumes: 
       - .:/var/www/gateway
+      - /var/www/gateway/node_modules
     env_file:
       - .env
     ports:
@@ -21,6 +22,7 @@ services:
     hostname: gateway
     volumes: 
       - .:/var/www/gateway
+      - /var/www/gateway/node_modules
     env_file:
       - .env
     command: npm run start:dev
@@ -36,6 +38,7 @@ services:
     hostname: gateway
     volumes: 
       - .:/var/www/gateway
+      - /var/www/gateway/node_modules
     command: npm run start:prod
     env_file:
       - .env
@@ -49,26 +52,26 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
+    restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - backend
+    volumes:
+      - ./rabbit_data:/var/lib/rabbitmq/
 
   mongo:
     container_name: mongo
     image: mongo
     volumes:
-      - mongo_data:/data/db
+      - ./data/db:/data/db
     ports:
       - 27017:27017
     networks:
-      - backend
-      
+      - backend 
+    
 networks:
   backend:
     name: cartografia-network
     driver: bridge
-  
-volumes: 
-  mongo_data:

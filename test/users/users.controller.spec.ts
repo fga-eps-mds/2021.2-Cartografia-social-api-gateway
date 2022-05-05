@@ -82,6 +82,7 @@ describe('UsersController', () => {
         name: 'Example',
         cellPhone: '61992989898',
         password: password,
+        type: 'COMMUNITY_MEMBER',
       }),
     ).toBe(id);
   });
@@ -102,6 +103,7 @@ describe('UsersController', () => {
         name: 'Example',
         cellPhone: '61992989898',
         password: password,
+        type: 'COMMUNITY_MEMBER',
       }),
     ).toBe(id);
   });
@@ -123,9 +125,7 @@ describe('UsersController', () => {
 
     controller = module.get<UsersController>(UsersController);
 
-    const userData = await controller.getUserByEmail({
-      email: 'email@teste.com',
-    });
+    const userData = await controller.getUserByEmail('teste@email.com');
 
     expect(userData).toStrictEqual(userResponse);
     expect(userData).toBeInstanceOf(UserResponse);

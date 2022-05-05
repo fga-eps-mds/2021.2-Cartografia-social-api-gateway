@@ -4,6 +4,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { ConfigService } from './config/configuration';
 import { UsersController } from './users/users.controller';
 import { ComunidadeController } from './comunidade/comunidade.controller';
+import { GatewayController } from './gateway/gateway.controller';
 import { MapasController } from './mapas/mapas.controller';
 import { MidiaController } from './midia/midia.controller';
 import { FirebaseAuth } from './firebase/firebaseAuth';
@@ -25,6 +26,7 @@ type MicrosserviceConfig = {
     ComunidadeController,
     MapasController,
     MidiaController,
+    GatewayController,
   ],
   providers: [
     ConfigService,
